@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:id="@+id/mainactivity_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:elevation="15dp"
+        android:background="#e6000e">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="BerryMe"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingLeft="30dp"
+            android:layout_alignParentLeft="true"/>
+        <ImageView
+            android:id="@+id/mainactibity_setting"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/berryme_berry_white"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"/>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/mainactivity_framelayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/mainactivity_bottomnavigationview"
+        android:layout_below="@+id/mainactivity_titlebar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        app:itemIconTint="@drawable/menu_selector_color"
+        app:itemTextColor="@drawable/menu_selector_color"
+        app:menu="@menu/bottom_navigation_main"
+        app:itemHorizontalTranslationEnabled="true"
+        android:id="@+id/mainactivity_bottomnavigationview"
+        app:labelVisibilityMode="unlabeled"
+        app:elevation="16dp">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+</RelativeLayout>

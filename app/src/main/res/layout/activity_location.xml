@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LocationActivity">
+
+    <RelativeLayout
+        android:id="@+id/locationactivity_title_relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:elevation="15dp"
+        android:background="#e6000e"
+        android:layout_alignParentTop="true">
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/back_icon"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="LOCATION"
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/locationactivity_ok_linearlayout"
+        android:layout_below="@+id/locationactivity_title_relativelayout">
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/locationactivity_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".LocationActivity"
+            android:name="com.google.android.gms.maps.SupportMapFragment"/>
+        <ImageView
+            android:id="@+id/locationactivity_map_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/map_icon"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginBottom="25dp"/>
+        <ProgressBar
+            android:id="@+id/locationactivity_progressbar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/locationactivity_ok_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="location"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:gravity="center"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="SET LOCATION"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_margin="5dp"/>
+    </LinearLayout>
+
+</RelativeLayout>

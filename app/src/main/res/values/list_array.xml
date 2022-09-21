@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="list_me">
+        <item>삭제</item>
+    </string-array>
+    <string-array name="list_other">
+        <item>신고</item>
+    </string-array>
+</resources>

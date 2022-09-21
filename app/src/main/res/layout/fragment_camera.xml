@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/camerafragment_image_framelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/add_photo_icon" />
+
+                <ImageView
+                    android:id="@+id/camerafragment_imageview_picture"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/square_back" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/camerafragment_value_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:text="내용을 입력하세요."
+                android:textColor="@android:color/darker_gray" />
+
+            <EditText
+                android:id="@+id/camerafragment_edittext_text"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/round"
+                android:hint="내용"
+                android:padding="5dp"
+                android:textColor="@android:color/black" />
+
+            <LinearLayout
+                android:id="@+id/camerafragment_location_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="장소 추가"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_marginLeft="10dp"/>
+                <ImageView
+                    android:id="@+id/camerafragment_location_imageview"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/map_icon"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/camerafragment_button_register"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="5dp"
+                android:backgroundTint="#e6000e"
+                android:text="등록"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/camerafragment_progressbar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+</FrameLayout>

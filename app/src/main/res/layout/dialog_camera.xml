@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_gravity="center"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/cameradialog_gallery_textview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="갤러리에서 사진 가져오기"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"/>
+
+    <TextView
+        android:id="@+id/cameradialog_camera_textview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="카메라에서 사진 가져오기"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"/>
+
+</LinearLayout>
