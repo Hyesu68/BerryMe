@@ -8,7 +8,9 @@ width="150" hspace="10" vspace="10">
 
 ## Features  
 The android application lets you :
-- 
+- Connect to your BerryMe account.
+- Upload your pictures and share your daily life.
+- Leave a comment and press like to communicate with other users.
 
 ## ScreenShots
 <img src="https://user-images.githubusercontent.com/40760917/191666409-4af7f914-1a5b-440d-92e1-d8af904448ad.jpg" align="left" width="200" hspace="10" vspace="10">
@@ -16,8 +18,12 @@ The android application lets you :
 <img src="https://user-images.githubusercontent.com/40760917/191666449-4cc32593-2389-4ca6-9276-8729929abae0.jpg" align="left" width="200" hspace="10" vspace="10">
 <img src="https://user-images.githubusercontent.com/40760917/191666550-4e09ded2-402e-44b9-9862-08f3bcbfb8fd.jpg" align="left" width="200" hspace="10" vspace="10">
 <img src="https://user-images.githubusercontent.com/40760917/191666577-20b442aa-d37b-4f57-9206-7e968b0e3cbf.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/191666610-aa83f515-e532-4ffa-8c4a-5261131b6c60.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/191666610-aa83f515-e532-4ffa-8c4a-5261131b6c60.jpg" width="200" hspace="10" vspace="10">
 
+## Permissions
+BerryMe requires the following permissions:
+- Full Network Access.
+- Read and write access to external storage.
 
 
 
