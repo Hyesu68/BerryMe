@@ -40,6 +40,8 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        overridePendingTransition(R.anim.fromright, R.anim.none)
+
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         destinationUid = intent.getStringExtra("Uid")
@@ -74,6 +76,11 @@ class DetailActivity : AppCompatActivity() {
         }
 
         setDetail()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.none, R.anim.horizon_exit)
     }
 
     private fun setDetail() {
