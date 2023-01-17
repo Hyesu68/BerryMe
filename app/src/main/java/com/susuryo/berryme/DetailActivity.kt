@@ -374,12 +374,12 @@ class DetailActivity : AppCompatActivity() {
             nickname.setOnClickListener {
                 val intent = Intent(view.context, MemberActivity::class.java)
                 intent.putExtra("Uid", cmtList?.uid)
-                val activityOptions = ActivityOptions.makeCustomAnimation(
-                    view.context,
-                    R.anim.fromright,
-                    R.anim.toleft
-                )
-                context.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK), activityOptions.toBundle())
+//                val activityOptions = ActivityOptions.makeCustomAnimation(
+//                    view.context,
+//                    R.anim.fromright,
+//                    R.anim.toleft
+//                )
+                context.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK))
             }
 
             comment.text = cmtList.value

@@ -13,10 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
@@ -42,9 +39,10 @@ class CameraFragment : Fragment() {
     lateinit var picture : ImageView
     lateinit var text : TextView
     lateinit var button : Button
-    lateinit var locationImage: ImageView
+//    lateinit var locationImage: ImageView
     private var imageUri: Uri? = null
     var dialog: Dialog? = null
+    lateinit var locationButton : RelativeLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,8 +53,14 @@ class CameraFragment : Fragment() {
         picture = view.findViewById(R.id.camerafragment_imageview_picture)
         text = view.findViewById(R.id.camerafragment_edittext_text)
         button = view.findViewById(R.id.camerafragment_button_register)
-        locationImage = view.findViewById(R.id.camerafragment_location_imageview)
+        /*locationImage = view.findViewById(R.id.camerafragment_location_imageview)
         locationImage.setOnClickListener {
+            val intent = Intent(requireContext(), LocationActivity::class.java)
+            requireContext().startActivity(intent)
+        }*/
+
+        locationButton = view.findViewById(R.id.camerafragment_location_relativelayout)
+        locationButton.setOnClickListener {
             val intent = Intent(requireContext(), LocationActivity::class.java)
             requireContext().startActivity(intent)
         }

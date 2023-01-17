@@ -21,18 +21,24 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/add_photo_icon" />
+                    android:background="@drawable/add_photo_icon"
+                    android:backgroundTint="@color/quantum_grey"/>
 
                 <ImageView
                     android:id="@+id/camerafragment_imageview_picture"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/square_back" />
+                    android:layout_margin="10dp"/>
             </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/quantum_grey"/>
+<!--
 
             <TextView
                 android:id="@+id/camerafragment_value_title"
@@ -42,37 +48,49 @@
                 android:layout_marginLeft="10dp"
                 android:text="내용을 입력하세요."
                 android:textColor="@android:color/darker_gray" />
+-->
 
             <EditText
                 android:id="@+id/camerafragment_edittext_text"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/round"
-                android:hint="내용"
-                android:padding="5dp"
+                android:background="@null"
+                android:hint="Write a caption"
+                android:textColorHint="@color/quantum_grey"
                 android:textColor="@android:color/black" />
 
             <LinearLayout
-                android:id="@+id/camerafragment_location_linearlayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="1dp"
+                android:background="@color/quantum_grey"/>
+
+            <RelativeLayout
+                android:id="@+id/camerafragment_location_relativelayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="장소 추가"
-                    android:textColor="@android:color/black"
                     android:gravity="center"
-                    android:layout_marginLeft="10dp"/>
+                    android:text="Add Location"
+                    android:textColor="@android:color/black"
+                    android:textSize="20dp" />
                 <ImageView
                     android:id="@+id/camerafragment_location_imageview"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/map_icon"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:layout_gravity="center"/>
-            </LinearLayout>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/right_arrow_icon"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/quantum_grey"/>
 
             <Button
                 android:id="@+id/camerafragment_button_register"

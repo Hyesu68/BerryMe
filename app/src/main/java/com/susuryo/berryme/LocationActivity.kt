@@ -37,6 +37,8 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
 
+        overridePendingTransition(R.anim.fromright, R.anim.none)
+
         mapView = findViewById(R.id.locationactivity_map)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
@@ -56,6 +58,11 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
         back_button.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.none, R.anim.horizon_exit)
     }
 
     private fun setLaunchActivityClickListener(

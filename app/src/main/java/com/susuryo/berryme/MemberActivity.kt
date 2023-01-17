@@ -31,6 +31,8 @@ class MemberActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_member)
 
+        overridePendingTransition(R.anim.fromright, R.anim.none)
+
         destinationUid = intent.getStringExtra("Uid")
         memberactivity_title_relativelayout.visibility = View.VISIBLE
 
@@ -77,6 +79,11 @@ class MemberActivity : AppCompatActivity() {
 
                 override fun onCancelled(error: DatabaseError) {}
             })
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.none, R.anim.horizon_exit)
     }
 
     inner class MemberActivityGridViewAdapter(_context: Context, _pictures: MutableList<UserModel.Picture?>) : BaseAdapter() {
