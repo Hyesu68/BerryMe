@@ -24,7 +24,6 @@ import com.google.android.libraries.places.api.Places
 import kotlinx.android.synthetic.main.activity_location.*
 import kotlinx.android.synthetic.main.activity_setting.back_button
 
-
 class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapView: MapView
     private var mFusedLocationProviderClient: FusedLocationProviderClient? = null // 현재 위치를 가져오기 위한 변수
@@ -136,7 +135,7 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
         override fun onLocationResult(locationResult: LocationResult) {
             // 시스템에서 받은 location 정보를 onLocationChanged()에 전달
 //            locationResult.lastLocation
-            onLocationChanged(locationResult.lastLocation)
+            locationResult.lastLocation?.let { onLocationChanged(it) }
         }
     }
 

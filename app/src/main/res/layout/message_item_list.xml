@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/message_itemlist_profile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:layout_centerVertical="true"/>
+
+    <LinearLayout
+        android:id="@+id/message_linearlayout_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_toEndOf="@+id/message_itemlist_profile"
+        android:layout_toStartOf="@+id/message_imageview_new">
+        <TextView
+            android:id="@+id/message_textview_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="name"
+            android:textColor="@color/quantum_black_text"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:gravity="bottom"/>
+        <TextView
+            android:id="@+id/message_textview_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="text"
+            android:textColor="@color/quantum_black_text"
+            android:textSize="20dp"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/message_imageview_new"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/new_icon"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>
