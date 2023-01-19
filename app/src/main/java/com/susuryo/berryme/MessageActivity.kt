@@ -48,7 +48,6 @@ class MessageActivity : AppCompatActivity() {
                     .child("users")
                     .setValue(chat).addOnSuccessListener {
                         checkChatRoom()
-                        sendMsg()
                     }
             } else {
                 sendMsg()
@@ -81,6 +80,10 @@ class MessageActivity : AppCompatActivity() {
                             recyclerView!!.adapter = RecyclerViewAdapter(chatRoomUid,
                                 recyclerView!!, uid, destinationUid
                             )
+
+                            if (editText?.text?.isNotEmpty() == true) {
+                                sendMsg()
+                            }
                         }
                     }
                 }

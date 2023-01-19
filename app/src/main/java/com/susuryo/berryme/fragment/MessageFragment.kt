@@ -44,7 +44,7 @@ class MessageFragment : Fragment() {
     internal class ChatRecyclerViewAdapter(_activity : Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd hh:ss")
 
-        private val uid: String
+        private val uid: String = FirebaseAuth.getInstance().currentUser!!.uid
         private val activity = _activity
         private val chatModels: MutableList<ChatModel?> = ArrayList<ChatModel?>()
         private val destinationUsers = ArrayList<String?>()
@@ -85,7 +85,11 @@ class MessageFragment : Fragment() {
                     Collections.reverseOrder<Any>()
                 )
             chatModels[position]?.comments?.let { commentMap.putAll(it) }
-            val lastMessageKey = commentMap.keys.toTypedArray()[0]
+            val lastMessageKey : String = if (commentMap.keys.toTypedArray().isNotEmpty()) {
+                commentMap.keys.toTypedArray()[0]
+            } else {
+                ""
+            }
             customViewHolder.textview_last_message.setText(
                 chatModels[position]?.comments?.get(
                     lastMessageKey
@@ -104,7 +108,7 @@ class MessageFragment : Fragment() {
             }
 
             //TimeStamp
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
+            simpleDateFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
             val unixTime = chatModels[position]?.comments?.get(lastMessageKey)?.timestamp as Long
             val date = Date(unixTime)
             customViewHolder.textview_timestamp.setText(simpleDateFormat.format(date))
@@ -130,7 +134,6 @@ class MessageFragment : Fragment() {
         }
 
         init {
-            uid = FirebaseAuth.getInstance().currentUser!!.uid
             FirebaseDatabase.getInstance().reference.child("chatrooms").orderByChild("users/$uid")
                 .equalTo(true).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
