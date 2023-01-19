@@ -12,6 +12,11 @@
         android:title=""/>
 
     <item
+        android:id="@+id/action_message"
+        android:icon="@drawable/icon_message"
+        android:title=""/>
+
+    <item
         android:id="@+id/action_setting"
         android:icon="@drawable/person_icon"
         android:title=""/>

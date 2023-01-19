@@ -1,7 +1,8 @@
 package com.susuryo.berryme.fragment
 
 import android.app.Activity
-import android.content.Context
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,94 +12,138 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.lottie.LottieAnimationView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.susuryo.berryme.MainActivity
+import com.susuryo.berryme.MessageActivity
 import com.susuryo.berryme.R
-import com.susuryo.berryme.model.PictureModel
+import com.susuryo.berryme.model.ChatModel
 import com.susuryo.berryme.model.UserModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MessageFragment : Fragment() {
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_list, container, false)
-        val recyclerView: RecyclerView = view.findViewById(R.id.peoplefragment_recyclerview)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.peoplefragment_recyclerview)
+        recyclerView.adapter = ChatRecyclerViewAdapter(requireActivity())
         recyclerView.layoutManager = LinearLayoutManager(inflater.context)
-        var mainActivity = activity as MainActivity
-        recyclerView.adapter = MessageFragmentRecyclerViewAdapter(mainActivity)
+
         return view
     }
 
-    internal class MessageFragmentRecyclerViewAdapter(_activity: Activity) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        private var activity: Activity = _activity
-        private lateinit var context: Context
 
+    internal class ChatRecyclerViewAdapter(_activity : Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        private val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd hh:ss")
+
+        private val uid: String
+        private val activity = _activity
+        private val chatModels: MutableList<ChatModel?> = ArrayList<ChatModel?>()
+        private val destinationUsers = ArrayList<String?>()
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view: View = LayoutInflater.from(parent.context).inflate(
-                R.layout.message_item_list,
-                parent,
-                false
-            )
-            context = parent.context
+            val view: View =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_chat, parent, false)
             return CustomViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val customViewHolder = holder as CustomViewHolder
+            var destinationUid: String? = null
+
+            //챗방에 있는 유저 체크
+            for (user in chatModels[position]?.users?.keys!!) {
+                if (user != uid) {
+                    destinationUid = user
+                    destinationUsers.add(destinationUid)
+                }
+            }
+            FirebaseDatabase.getInstance().reference.child("users").child(destinationUid!!)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val userModel = snapshot.getValue(UserModel::class.java)
+                        Glide.with(customViewHolder.itemView.context)
+                            .load(userModel!!.profileImageUrl)
+                            .apply(RequestOptions().circleCrop())
+                            .into(customViewHolder.imageView)
+                        customViewHolder.textview_title.text = userModel.username
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+
+            //메시지를 내림 차순으로 정렬 후 마지막 메시지의 키값을 가져옴
+            val commentMap: MutableMap<String, ChatModel.Comment> =
+                TreeMap<String, ChatModel.Comment>(
+                    Collections.reverseOrder<Any>()
+                )
+            chatModels[position]?.comments?.let { commentMap.putAll(it) }
+            val lastMessageKey = commentMap.keys.toTypedArray()[0]
+            customViewHolder.textview_last_message.setText(
+                chatModels[position]?.comments?.get(
+                    lastMessageKey
+                )?.message
+            )
+            customViewHolder.itemView.setOnClickListener { view ->
+                val intent = Intent(view.context, MessageActivity::class.java)
+                intent.putExtra("destinationUid", destinationUsers[position])
+                val activityOptions =
+                    ActivityOptions.makeCustomAnimation(
+                        view.context,
+                        R.anim.fromright,
+                        R.anim.toleft
+                    )
+                activity.startActivity(intent, activityOptions.toBundle())
+            }
+
+            //TimeStamp
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
+            val unixTime = chatModels[position]?.comments?.get(lastMessageKey)?.timestamp as Long
+            val date = Date(unixTime)
+            customViewHolder.textview_timestamp.setText(simpleDateFormat.format(date))
+        }
+
+        override fun getItemCount(): Int {
+            return chatModels.size
         }
 
         private inner class CustomViewHolder(view: View) :
             RecyclerView.ViewHolder(view) {
-            var profileImageView: ImageView = view.findViewById(R.id.message_itemlist_profile)
-            var nameTextView: ImageView = view.findViewById(R.id.message_textview_name)
-            var textTextView: ImageView = view.findViewById(R.id.message_textview_text)
-            var newImageView: ImageView = view.findViewById(R.id.message_imageview_new)
+            var imageView: ImageView
+            var textview_title: TextView
+            var textview_last_message: TextView
+            var textview_timestamp: TextView
+
+            init {
+                imageView = view.findViewById(R.id.chatitem_imageview)
+                textview_title = view.findViewById(R.id.chatitem_textview_title)
+                textview_last_message = view.findViewById(R.id.chatitem_textview_lastmessage)
+                textview_timestamp = view.findViewById(R.id.chatitem_textview_timestamp)
+            }
         }
 
         init {
-            FirebaseDatabase.getInstance().reference.child("messages")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        pictureModels.clear()
-                        for (snapshot in dataSnapshot.children) {
-                            var picValue: PictureModel? = snapshot.getValue(PictureModel::class.java)
-                            picValue?.pictureKey = snapshot.key
-                            pictureModels.add(picValue)
+            uid = FirebaseAuth.getInstance().currentUser!!.uid
+            FirebaseDatabase.getInstance().reference.child("chatrooms").orderByChild("users/$uid")
+                .equalTo(true).addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        chatModels.clear()
+                        for (item in snapshot.children) {
+                            chatModels.add(item.getValue(ChatModel::class.java))
                         }
-
-                        for (i: Int in 0 until pictureModels.size) {
-                            FirebaseDatabase.getInstance().reference.child("users").child(pictureModels[i]?.uid!!)
-                                .addValueEventListener(object : ValueEventListener {
-                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                        val userTmp: UserModel? = dataSnapshot.getValue(UserModel::class.java)
-                                        pictureModels[i]?.profileImageUrl = userTmp?.profileImageUrl
-                                        pictureModels[i]?.username = userTmp?.username
-                                        if (i == pictureModels.size - 1) {
-                                            notifyDataSetChanged()
-                                        }
-                                    }
-
-                                    override fun onCancelled(error: DatabaseError) {
-                                    }
-                                })
-                        }
+                        notifyDataSetChanged()
                     }
 
                     override fun onCancelled(error: DatabaseError) {}
                 })
         }
-
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            TODO("Not yet implemented")
-        }
-
-        override fun getItemCount(): Int {
-            TODO("Not yet implemented")
-        }
     }
+
 }

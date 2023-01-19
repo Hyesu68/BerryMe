@@ -79,6 +79,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/memberactivity_button_message"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Send messages"

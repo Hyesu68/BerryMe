@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -19,13 +20,13 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.susuryo.berryme.model.UserModel
 import kotlinx.android.synthetic.main.activity_member.*
-import kotlinx.android.synthetic.main.activity_member.back_button
 import java.util.*
 
 class MemberActivity : AppCompatActivity() {
     private var destinationUid: String? = null
     private var name: String? = null
     private var profile: String? = null
+    var messageButton: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,14 @@ class MemberActivity : AppCompatActivity() {
 
         destinationUid = intent.getStringExtra("Uid")
         memberactivity_title_relativelayout.visibility = View.VISIBLE
+
+        messageButton = findViewById(R.id.memberactivity_button_message)
+
+        messageButton?.setOnClickListener {
+            val intent = Intent(applicationContext, MessageActivity::class.java)
+            intent.putExtra("destinationUid", destinationUid)
+            startActivity(intent)
+        }
 
         back_button.setOnClickListener {
             onBackPressed()

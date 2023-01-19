@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/messageitem_lineatlayout_main">
+
+    <LinearLayout
+        android:id="@+id/messageitem_linearlayout_destination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/messageitem_imageview_profile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+        <TextView
+            android:id="@+id/messageitem_textview_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이름"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/messageitem_textview_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="메시지"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/messageitem_textview_timestamp"
+            android:text="2011.11.11 11:11"
+            android:textSize="9dp"
+            android:textColor="@android:color/darker_gray"/>
+    </LinearLayout>
+</LinearLayout>

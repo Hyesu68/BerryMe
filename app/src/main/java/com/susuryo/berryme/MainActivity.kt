@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.susuryo.berryme.fragment.CameraFragment
 import com.susuryo.berryme.fragment.ListFragment
+import com.susuryo.berryme.fragment.MessageFragment
 import com.susuryo.berryme.fragment.MyFragment
 import com.susuryo.berryme.model.UserModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,6 +46,11 @@ class MainActivity : AppCompatActivity() {
                         .replace(R.id.mainactivity_framelayout, CameraFragment()).commit()
                     return@OnNavigationItemSelectedListener true
                 }
+                R.id.action_message -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.mainactivity_framelayout, MessageFragment()).commit()
+                    return@OnNavigationItemSelectedListener true
+                }
                 R.id.action_setting -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.mainactivity_framelayout, MyFragment()).commit()
@@ -71,6 +77,10 @@ class MainActivity : AppCompatActivity() {
             R.id.action_camera -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.mainactivity_framelayout, CameraFragment()).commit()
+            }
+            R.id.action_message -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.mainactivity_framelayout, MessageFragment()).commit()
             }
             R.id.action_setting -> {
                 supportFragmentManager.beginTransaction()

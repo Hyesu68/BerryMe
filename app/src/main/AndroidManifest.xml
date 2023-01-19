@@ -20,6 +20,9 @@
         android:roundIcon="@drawable/berryme_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".MessageActivity"
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -33,30 +36,32 @@
             android:required="false" />
 
         <activity
-            android:name="com.susuryo.berryme.ChangeProfileActivity"
+            android:name=".ChangeProfileActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="com.susuryo.berryme.SettingActivity"
+            android:name=".SettingActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="com.susuryo.berryme.DetailActivity"
+            android:name=".DetailActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="com.susuryo.berryme.MemberActivity"
+            android:name=".MemberActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="com.susuryo.berryme.MainActivity"
+            android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="com.susuryo.berryme.SignupActivity"
+            android:name=".SignupActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="com.susuryo.berryme.LoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name="com.susuryo.berryme.LocationActivity"
+            android:name=".LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="com.susuryo.berryme.SplashActivity"
+            android:name=".LocationActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
