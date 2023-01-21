@@ -16,10 +16,11 @@
 
         <TextView
             android:id="@+id/chatitem_textview_title"
-            android:text="방이름"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"/>
+            android:text="방이름"
+            android:textColor="@color/quantum_black_text"
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/chatitem_textview_lastmessage"

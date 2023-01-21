@@ -9,22 +9,28 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messageactivity_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="665dp" />
-
-    <EditText
-        android:id="@+id/messageactivity_edittext"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/messageactivity_button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
+        android:layout_above="@+id/messageactivity_relativelayout"/>
 
-    <Button
-        android:id="@+id/messageactivity_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="전송"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
+    <RelativeLayout
+        android:id="@+id/messageactivity_relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true">
+        <EditText
+            android:id="@+id/messageactivity_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/messageactivity_button"
+            android:layout_alignParentLeft="true"/>
 
+        <Button
+            android:id="@+id/messageactivity_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전송"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 </RelativeLayout>

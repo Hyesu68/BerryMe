@@ -141,6 +141,7 @@ class MessageFragment : Fragment() {
                         for (item in snapshot.children) {
                             chatModels.add(item.getValue(ChatModel::class.java))
                         }
+                        chatModels.reverse()
                         notifyDataSetChanged()
                     }
 
