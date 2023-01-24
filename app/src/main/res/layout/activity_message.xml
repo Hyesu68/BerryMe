@@ -4,12 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MessageActivity">
+    tools:context=".MessageActivity"
+    android:background="#FFFFFF">
+
+    <RelativeLayout
+        android:id="@+id/messageactivity_title_relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:elevation="15dp"
+        android:background="#e6000e"
+        android:layout_alignParentTop="true">
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/back_icon"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="MESSAGE"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messageactivity_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:layout_above="@+id/messageactivity_relativelayout"/>
 
     <RelativeLayout
@@ -20,16 +48,19 @@
         <EditText
             android:id="@+id/messageactivity_edittext"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_centerInParent="true"
             android:layout_toLeftOf="@+id/messageactivity_button"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/round"
+            android:textColor="#000000"
+            android:layout_margin="5dp"/>
 
         <Button
             android:id="@+id/messageactivity_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="전송"
+            android:layout_height="50dp"
+            android:text="SEND"
             android:layout_centerInParent="true"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>

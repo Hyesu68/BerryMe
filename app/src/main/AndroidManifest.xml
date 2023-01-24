@@ -22,7 +22,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MessageActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

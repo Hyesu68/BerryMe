@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MessageFragment : Fragment() {
+    lateinit var recyclerView: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,10 +37,12 @@ class MessageFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.peoplefragment_recyclerview)
         recyclerView.adapter = ChatRecyclerViewAdapter(requireActivity())
         recyclerView.layoutManager = LinearLayoutManager(inflater.context)
-
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
 
     internal class ChatRecyclerViewAdapter(_activity : Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd hh:ss")
@@ -141,7 +144,17 @@ class MessageFragment : Fragment() {
                         for (item in snapshot.children) {
                             chatModels.add(item.getValue(ChatModel::class.java))
                         }
-                        chatModels.reverse()
+//                        chatModels.reverse()
+/*
+                        val sortedChatrooms = chatModels.sortedByDescending {
+                            val comments = it?.comments
+                            if (comments != null) {
+                                val lastComment = comments.values.maxBy { it.timestamp as Long }
+                                lastComment?.timestamp ?: 0
+                            } else {
+                                0
+                            }
+                        }*/
                         notifyDataSetChanged()
                     }
 
