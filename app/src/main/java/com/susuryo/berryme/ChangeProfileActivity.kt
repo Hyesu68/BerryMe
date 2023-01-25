@@ -19,8 +19,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import com.susuryo.berryme.databinding.ActivityChangeProfileBinding
 import com.susuryo.berryme.model.UserModel
-import kotlinx.android.synthetic.main.activity_change_profile.*
+//import kotlinx.android.synthetic.main.activity_change_profile.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -28,19 +29,21 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class ChangeProfileActivity : AppCompatActivity() {
+    private lateinit var binding : ActivityChangeProfileBinding
     private var imageUri: Uri? = null
     private var isImageChanged = false
     var dialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_change_profile)
+        binding = ActivityChangeProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        back_button.setOnClickListener {
+        binding.backButton.setOnClickListener {
             onBackPressed()
         }
 
-        changeprofileactivity_edittext_email.setOnClickListener {
+        binding.changeprofileactivityEdittextEmail.setOnClickListener {
             Toast.makeText(applicationContext, "이메일은 변경이 불가합니다.", Toast.LENGTH_SHORT).show()
         }
 
@@ -52,11 +55,11 @@ class ChangeProfileActivity : AppCompatActivity() {
             .load(UserObject.userModel.profileImageUrl)
             .apply(RequestOptions().centerCrop())
             .placeholder(circularProgressDrawable)
-            .into(changeprofileactivity_imageview_profile)
+            .into(binding.changeprofileactivityImageviewProfile)
 
-        changeprofileactivity_edittext_email.text = UserObject.userModel.email
-        changeprofileactivity_edittext_name.setText(UserObject.userModel.username)
-        changeprofileactivity_edittext_info.setText(UserObject.userModel.info)
+        binding.changeprofileactivityEdittextEmail.text = UserObject.userModel.email
+        binding.changeprofileactivityEdittextName.setText(UserObject.userModel.username)
+        binding.changeprofileactivityEdittextInfo.setText(UserObject.userModel.info)
 
 //        changeprofileactivity_imageview_profile.setOnClickListener {
 //            val intent = Intent(Intent.ACTION_PICK)
@@ -74,14 +77,14 @@ class ChangeProfileActivity : AppCompatActivity() {
                         Pictures?.put(picture?.picUid!!, picture!!)
                     }
 
-                    changeprofileactivity_button_signup.setOnClickListener {
-                        var isNameChanged = (changeprofileactivity_edittext_name.text.toString() != UserObject.userModel.username.toString())
-                        var isInfoChanged = (changeprofileactivity_edittext_info.text.toString() != UserObject.userModel.info)
+                   binding.changeprofileactivityButtonSignup.setOnClickListener {
+                        var isNameChanged = (binding.changeprofileactivityEdittextName.text.toString() != UserObject.userModel.username.toString())
+                        var isInfoChanged = (binding.changeprofileactivityEdittextInfo.text.toString() != UserObject.userModel.info)
 
                         if (isNameChanged) {
                             FirebaseDatabase.getInstance().reference.child("users")
                                 .child(UserObject.userModel.uid!!).child("username")
-                                .setValue(changeprofileactivity_edittext_name.text.toString())
+                                .setValue(binding.changeprofileactivityEdittextName.text.toString())
                                 .addOnSuccessListener {
                                     isNameChanged = false
                                     if (!isNameChanged && !isInfoChanged && !isImageChanged) {
@@ -97,7 +100,7 @@ class ChangeProfileActivity : AppCompatActivity() {
                         if (isInfoChanged) {
                             FirebaseDatabase.getInstance().reference.child("users")
                                 .child(UserObject.userModel.uid!!).child("info")
-                                .setValue(changeprofileactivity_edittext_info.text.toString())
+                                .setValue(binding.changeprofileactivityEdittextInfo.text.toString())
                                 .addOnSuccessListener {
                                     isInfoChanged = false
                                     if (!isNameChanged && !isInfoChanged && !isImageChanged) {
@@ -140,7 +143,7 @@ class ChangeProfileActivity : AppCompatActivity() {
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        changeprofileactivity_imageview_profile.setOnClickListener {
+        binding.changeprofileactivityImageviewProfile.setOnClickListener {
             dialog = Dialog(ChangeProfileActivity@this)
             dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog?.setContentView(R.layout.dialog_camera)
@@ -178,7 +181,7 @@ class ChangeProfileActivity : AppCompatActivity() {
                     .load(imageUri)
                     .apply(RequestOptions().fitCenter())
                     .placeholder(circularProgressDrawable)
-                    .into(changeprofileactivity_imageview_profile)
+                    .into(binding.changeprofileactivityImageviewProfile)
             } else if (requestCode == REQUEST_TAKE_PHOTO) {
                 galleryAddPic()
             }
@@ -203,7 +206,7 @@ class ChangeProfileActivity : AppCompatActivity() {
             .load(imageUri)
             .apply(RequestOptions().fitCenter())
             .placeholder(circularProgressDrawable)
-            .into(changeprofileactivity_imageview_profile)
+            .into(binding.changeprofileactivityImageviewProfile)
     }
 
 

@@ -25,47 +25,51 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.susuryo.berryme.*
 import com.susuryo.berryme.R
+import com.susuryo.berryme.databinding.ActivityMainBinding
+import com.susuryo.berryme.databinding.FragmentCameraBinding
 import com.susuryo.berryme.model.PictureModel
 import com.susuryo.berryme.model.UserModel
-import kotlinx.android.synthetic.main.fragment_camera.*
+//import kotlinx.android.synthetic.main.fragment_camera.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class CameraFragment : Fragment() {
+    private var _binding: FragmentCameraBinding? = null
+    private val binding get() = _binding!!
 
-    lateinit var picture : ImageView
-    lateinit var text : TextView
-    lateinit var button : Button
+//    lateinit var picture : ImageView
+//    lateinit var text : TextView
+//    lateinit var button : Button
 //    lateinit var locationImage: ImageView
     private var imageUri: Uri? = null
     var dialog: Dialog? = null
-    lateinit var locationButton : RelativeLayout
+//    lateinit var locationButton : RelativeLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view : View = inflater.inflate(R.layout.fragment_camera, container, false)
-        picture = view.findViewById(R.id.camerafragment_imageview_picture)
-        text = view.findViewById(R.id.camerafragment_edittext_text)
-        button = view.findViewById(R.id.camerafragment_button_register)
+//        val view : View = inflater.inflate(R.layout.fragment_camera, container, false)
+        _binding = FragmentCameraBinding.inflate(inflater, container, false)
+//        picture = view.findViewById(R.id.camerafragment_imageview_picture)
+//        text = view.findViewById(R.id.camerafragment_edittext_text)
+//        button = view.findViewById(R.id.camerafragment_button_register)
         /*locationImage = view.findViewById(R.id.camerafragment_location_imageview)
         locationImage.setOnClickListener {
             val intent = Intent(requireContext(), LocationActivity::class.java)
             requireContext().startActivity(intent)
         }*/
 
-        locationButton = view.findViewById(R.id.camerafragment_location_relativelayout)
-        locationButton.setOnClickListener {
+//        locationButton = view.findViewById(R.id.camerafragment_location_relativelayout)
+       binding.camerafragmentLocationRelativelayout.setOnClickListener {
             val intent = Intent(requireContext(), LocationActivity::class.java)
             requireContext().startActivity(intent)
         }
 
-        picture.setOnClickListener(View.OnClickListener {
+        binding.camerafragmentImageviewPicture.setOnClickListener(View.OnClickListener {
             dialog = Dialog(requireContext())
             dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog?.setContentView(R.layout.dialog_camera)
@@ -86,10 +90,10 @@ class CameraFragment : Fragment() {
 
         })
 
-        button.setOnClickListener {
-            if (imageUri != null && text.text.toString().isNotEmpty()) {
-                button.isClickable = false
-                camerafragment_progressbar.visibility = View.VISIBLE
+        binding.camerafragmentButtonRegister.setOnClickListener {
+            if (imageUri != null && binding.camerafragmentEdittextText.text.toString().isNotEmpty()) {
+                binding.camerafragmentButtonRegister.isClickable = false
+                binding.camerafragmentProgressbar.visibility = View.VISIBLE
 
                 val uid = UserObject.userModel.uid!!
                 FirebaseDatabase.getInstance().reference.child("users").child(uid)
@@ -114,7 +118,7 @@ class CameraFragment : Fragment() {
                                         val pictureModel = PictureModel()
                                         pictureModel.uid = uid
 //                                        pictureModel.username = username
-                                        pictureModel.value = text.text.toString()
+                                        pictureModel.value = binding.camerafragmentEdittextText.text.toString()
                                         pictureModel.pictureImageUrl = imageUri
 //                                        pictureModel.profileImageUrl = profileUrl
                                         pictureModel.timestamp = ServerValue.TIMESTAMP
@@ -130,11 +134,11 @@ class CameraFragment : Fragment() {
                                                     .child(uid).child("Pictures").child(picName)
                                                     .setValue(pictures)
                                                     .addOnSuccessListener {
-                                                        camerafragment_progressbar.visibility =
+                                                        binding.camerafragmentProgressbar.visibility =
                                                             View.GONE
                                                         var mainActivity = activity as MainActivity
 //                                                        mainActivity.setFragment(R.id.action_list)
-                                                        mainActivity.bottomNavigationView.selectedItemId =
+                                                        mainActivity.binding.mainactivityBottomnavigationview.selectedItemId =
                                                             R.id.action_list
                                                     }
                                             }
@@ -144,9 +148,9 @@ class CameraFragment : Fragment() {
                         }
 
                         override fun onCancelled(error: DatabaseError) {
-                            camerafragment_progressbar.visibility = View.GONE
+                            binding.camerafragmentProgressbar.visibility = View.GONE
 
-                            button.isClickable = true
+                            binding.camerafragmentButtonRegister.isClickable = true
                             Toast.makeText(context, error.toString() + "", Toast.LENGTH_SHORT)
                                 .show()
                         }
@@ -157,7 +161,12 @@ class CameraFragment : Fragment() {
             }
         }
 
-        return view
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -180,7 +189,7 @@ class CameraFragment : Fragment() {
                     .load(imageUri)
                     .apply(RequestOptions().fitCenter())
                     .placeholder(circularProgressDrawable)
-                    .into(picture)
+                    .into(binding.camerafragmentImageviewPicture)
             } else if (requestCode == REQUEST_TAKE_PHOTO) {
                 galleryAddPic()
             }
@@ -209,7 +218,7 @@ class CameraFragment : Fragment() {
             .load(imageUri)
             .apply(RequestOptions().fitCenter())
             .placeholder(circularProgressDrawable)
-            .into(picture)
+            .into(binding.camerafragmentImageviewPicture)
     }
 
     companion object {

@@ -21,13 +21,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.ddd.androidutils.DoubleClick
 import com.ddd.androidutils.DoubleClickListener
 import com.google.firebase.database.*
+import com.susuryo.berryme.databinding.ActivityDetailBinding
 import com.susuryo.berryme.model.PictureModel
-import kotlinx.android.synthetic.main.activity_detail.*
+//import kotlinx.android.synthetic.main.activity_detail.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class DetailActivity : AppCompatActivity() {
+    private lateinit var binding : ActivityDetailBinding
     private var destinationUid: String? = null
     private var name: String? = null
     private var profile: String? = null
@@ -38,7 +40,8 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         overridePendingTransition(R.anim.fromright, R.anim.none)
 
@@ -46,7 +49,7 @@ class DetailActivity : AppCompatActivity() {
 
         destinationUid = intent.getStringExtra("Uid")
         name = intent.getStringExtra("name")
-        listitem_textview_name.text = name
+        binding.listitemTextviewName.text = name
         profile = intent.getStringExtra("profile")
         var picurl = intent.getStringExtra("picurl")
         picuid = intent.getStringExtra("picuid")
@@ -60,18 +63,18 @@ class DetailActivity : AppCompatActivity() {
             .load(profile)
             .apply(RequestOptions().circleCrop())
             .placeholder(circularProgressDrawable)
-            .into(listitem_imageview_profile)
+            .into(binding.listitemImageviewProfile)
 
-        listitem_textview_name.text = name
-        listitem_textview_valuename.text = name
+        binding.listitemTextviewName.text = name
+        binding.listitemTextviewValuename.text = name
 
         Glide.with(applicationContext)
             .load(picurl)
             .apply(RequestOptions().centerCrop())
             .placeholder(circularProgressDrawable)
-            .into(listitem_imageview_picture)
+            .into(binding.listitemImageviewPicture)
 
-        back_button.setOnClickListener {
+        binding.backButton.setOnClickListener {
             onBackPressed()
         }
 
@@ -89,7 +92,7 @@ class DetailActivity : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     picValue = dataSnapshot.getValue(PictureModel::class.java)
                     picValue?.pictureKey = dataSnapshot.key
-                    listitem_textview_value.text = picValue?.value
+                    binding.listitemTextviewValue.text = picValue?.value
                     likesNum = if (picValue?.Likes != null) {
                         picValue?.Likes?.size!!
                     } else {
@@ -99,7 +102,7 @@ class DetailActivity : AppCompatActivity() {
                     FirebaseDatabase.getInstance().reference.child("pictures").child(picuid!!).child("comment")
                         .addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                detailactivity_comment_listview.adapter = null
+                                binding.detailactivityCommentListview.adapter = null
                                 val cmtArrayList = ArrayList<PictureModel.Comments>()
                                 for (snapshot in dataSnapshot.children) {
                                     val cmtTmp = snapshot.getValue(PictureModel.Comments::class.java)
@@ -107,11 +110,11 @@ class DetailActivity : AppCompatActivity() {
                                     cmtArrayList.add(cmtTmp!!)
                                 }
                                 val commentListAdapter = CommentListAdapter(applicationContext, cmtArrayList)
-                                detailactivity_comment_listview.setOnItemLongClickListener { adapterView, view, i, l ->
+                                binding.detailactivityCommentListview.setOnItemLongClickListener { adapterView, view, i, l ->
                                     showCommentDialog(picuid, cmtArrayList[i].key, UserObject.userModel.uid == cmtArrayList[i].uid)
                                     return@setOnItemLongClickListener(true)
                                 }
-                                detailactivity_comment_listview.adapter = commentListAdapter
+                                binding.detailactivityCommentListview.adapter = commentListAdapter
                             }
 
                             override fun onCancelled(error: DatabaseError) {
@@ -121,11 +124,11 @@ class DetailActivity : AppCompatActivity() {
                     simpleDateFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
                     val unixTime = picValue?.timestamp as Long
                     val date = Date(unixTime)
-                    listitem_textview_time.text = simpleDateFormat.format(date)
+                    binding.listitemTextviewTime.text = simpleDateFormat.format(date)
 
 //                    val likesSize = picValue?.Likes?.size
-                    listitem_textview_likenum.text = likesNum.toString()
-                    listitem_imageview_menu.setOnClickListener {
+                    binding.listitemTextviewLikenum.text = likesNum.toString()
+                    binding.listitemImageviewMenu.setOnClickListener {
                         showDialog(picValue?.pictureKey, picValue?.uid == UserObject.userModel.uid)
                     }
 
@@ -134,7 +137,7 @@ class DetailActivity : AppCompatActivity() {
                         for (i in picValue?.Likes!!) {
                             if (i.key == UserObject.userModel.uid) {
                                 isLiked = true
-                                listitem_imageview_heart.setImageDrawable(
+                                binding.listitemImageviewHeart.setImageDrawable(
                                     applicationContext.resources.getDrawable(
                                         R.drawable.icon_love_filled,
                                         applicationContext.theme
@@ -153,9 +156,9 @@ class DetailActivity : AppCompatActivity() {
                                 if (likesNum < 0) {
                                     likesNum = 0
                                 }
-                                listitem_textview_likenum.text = likesNum.toString()
+                                binding.listitemTextviewLikenum.text = likesNum.toString()
                                 isLiked = false
-                                listitem_imageview_heart.setImageDrawable(
+                                binding.listitemImageviewHeart.setImageDrawable(
                                     applicationContext.resources.getDrawable(
                                         R.drawable.icon_love_blank,
                                         applicationContext.theme
@@ -175,23 +178,23 @@ class DetailActivity : AppCompatActivity() {
                                     }
                             } else {
                                 likesNum += 1
-                                listitem_textview_likenum.text = likesNum.toString()
+                                binding.listitemTextviewLikenum.text = likesNum.toString()
                                 isLiked = true
-                                listitem_imageview_heart.setImageDrawable(
+                                binding.listitemImageviewHeart.setImageDrawable(
                                     applicationContext.resources.getDrawable(
                                         R.drawable.icon_love_filled,
                                         applicationContext.theme
                                     )
                                 )
 
-                                listitem_animation_like.visibility = View.VISIBLE
-                                listitem_animation_like.playAnimation()
-                                listitem_animation_like.addAnimatorListener(object : Animator.AnimatorListener {
+                                binding.listitemAnimationLike.visibility = View.VISIBLE
+                                binding.listitemAnimationLike.playAnimation()
+                                binding.listitemAnimationLike.addAnimatorListener(object : Animator.AnimatorListener {
                                     override fun onAnimationStart(p0: Animator?) {
                                     }
 
                                     override fun onAnimationEnd(p0: Animator?) {
-                                        listitem_animation_like.visibility = View.GONE
+                                        binding.listitemAnimationLike.visibility = View.GONE
                                     }
 
                                     override fun onAnimationCancel(p0: Animator?) {
@@ -209,14 +212,14 @@ class DetailActivity : AppCompatActivity() {
                             }
                         }
                     })
-                    listitem_imageview_picture.setOnClickListener(doubleClick)
+                    binding.listitemImageviewPicture.setOnClickListener(doubleClick)
 
-                    detailactivity_comment_button.setOnClickListener {
-                        if (detailactivity_comment_edittext.text != null) {
+                    binding.detailactivityCommentButton.setOnClickListener {
+                        if (binding.detailactivityCommentEdittext.text != null) {
                             val pictureComment = PictureModel.Comments()
                             pictureComment.uid = UserObject.userModel.uid
                             pictureComment.username = UserObject.userModel.username
-                            pictureComment.value = detailactivity_comment_edittext.text.toString()
+                            pictureComment.value = binding.detailactivityCommentEdittext.text.toString()
                             pictureComment.timestamp = ServerValue.TIMESTAMP
 
                             val dt = Date()
@@ -228,7 +231,7 @@ class DetailActivity : AppCompatActivity() {
                                 .child(picValue?.pictureKey!!).child("comment").child(commentName)
                                 .setValue(pictureComment)
                                 .addOnSuccessListener {
-                                    detailactivity_comment_edittext.text = null
+                                    binding.detailactivityCommentEdittext.text = null
                                     imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
                                     setDetail()
                                 }

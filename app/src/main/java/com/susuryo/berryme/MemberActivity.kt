@@ -18,11 +18,13 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.susuryo.berryme.databinding.ActivityMemberBinding
 import com.susuryo.berryme.model.UserModel
-import kotlinx.android.synthetic.main.activity_member.*
+//import kotlinx.android.synthetic.main.activity_member.*
 import java.util.*
 
 class MemberActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMemberBinding
     private var destinationUid: String? = null
     private var name: String? = null
     private var profile: String? = null
@@ -30,12 +32,13 @@ class MemberActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member)
+        binding = ActivityMemberBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         overridePendingTransition(R.anim.fromright, R.anim.none)
 
         destinationUid = intent.getStringExtra("Uid")
-        memberactivity_title_relativelayout.visibility = View.VISIBLE
+        binding.memberactivityTitleRelativelayout.visibility = View.VISIBLE
 
         messageButton = findViewById(R.id.memberactivity_button_message)
 
@@ -45,7 +48,7 @@ class MemberActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        back_button.setOnClickListener {
+        binding.backButton.setOnClickListener {
             onBackPressed()
         }
 
@@ -54,15 +57,15 @@ class MemberActivity : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val user = dataSnapshot.getValue(UserModel::class.java)
                     name = user?.username
-                    memberactivity_textview_name.text = name
+                    binding.memberactivityTextviewName.text = name
 
                     profile = user?.profileImageUrl
                     Glide.with(applicationContext)
                         .load(profile)
                         .apply(RequestOptions().circleCrop())
-                        .into(memberactivity_imageview_profile)
+                        .into(binding.memberactivityImageviewProfile)
 
-                    memberactivity_textview_info.text = user?.info
+                    binding.memberactivityTextviewInfo.text = user?.info
                 }
 
                 override fun onCancelled(error: DatabaseError) {}
@@ -79,11 +82,11 @@ class MemberActivity : AppCompatActivity() {
                     }
 
 //                    pictures?.reverse()
-                    memberactivity_gridview.adapter = MemberActivityGridViewAdapter(
+                    binding.memberactivityGridview.adapter = MemberActivityGridViewAdapter(
                         applicationContext,
                         pictures
                     )
-                    memberactivity_gridview.isExpanded = true
+                    binding.memberactivityGridview.isExpanded = true
                 }
 
                 override fun onCancelled(error: DatabaseError) {}

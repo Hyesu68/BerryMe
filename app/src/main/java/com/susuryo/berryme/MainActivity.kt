@@ -9,19 +9,22 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.susuryo.berryme.databinding.ActivityMainBinding
 import com.susuryo.berryme.fragment.CameraFragment
 import com.susuryo.berryme.fragment.ListFragment
 import com.susuryo.berryme.fragment.MessageFragment
 import com.susuryo.berryme.fragment.MyFragment
 import com.susuryo.berryme.model.UserModel
-import kotlinx.android.synthetic.main.activity_main.*
+//import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    lateinit var bottomNavigationView: BottomNavigationView
+    lateinit var binding: ActivityMainBinding
+//    lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         var uid = FirebaseAuth.getInstance().currentUser!!.uid //채팅 요구하는 아이디
         FirebaseDatabase.getInstance().reference.child("users").child(uid)
@@ -33,8 +36,8 @@ class MainActivity : AppCompatActivity() {
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        bottomNavigationView = findViewById(R.id.mainactivity_bottomnavigationview)
-        bottomNavigationView.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+//        binding.mainactivityBottomnavigationview = findViewById(R.id.mainactivity_bottomnavigationview)
+        binding.mainactivityBottomnavigationview.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_list -> {
                     supportFragmentManager.beginTransaction()
@@ -62,13 +65,13 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.mainactivity_framelayout, ListFragment()).commit()
 
-        mainactibity_setting.setOnClickListener {
+        binding.mainactibitySetting.setOnClickListener {
             startActivity(Intent(this, SettingActivity::class.java))
         }
     }
 
     fun setFragment(id: Int) {
-        bottomNavigationView.selectedItemId = id
+        binding.mainactivityBottomnavigationview.selectedItemId = id
         when (id) {
             R.id.action_list -> {
                 supportFragmentManager.beginTransaction()

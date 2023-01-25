@@ -13,37 +13,40 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.susuryo.berryme.databinding.ActivityMessageBinding
 import com.susuryo.berryme.model.ChatModel
 import com.susuryo.berryme.model.UserModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MessageActivity : AppCompatActivity() {
+    private lateinit var binding : ActivityMessageBinding
     private var destinationUid: String? = null
-    private var button: Button? = null
-    private var editText: EditText? = null
+//    private var button: Button? = null
+//    private var editText: EditText? = null
     private var uid: String? = null
     private var chatRoomUid: String? = null
-    private var recyclerView: RecyclerView? = null
+//    private var recyclerView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_message)
+        binding = ActivityMessageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         uid = FirebaseAuth.getInstance().currentUser!!.uid //채팅 요구하는 아이디
         destinationUid = intent.getStringExtra("destinationUid")
-        button = findViewById(R.id.messageactivity_button)
-        editText = findViewById(R.id.messageactivity_edittext)
-        recyclerView = findViewById(R.id.messageactivity_recyclerview)
-        button?.setOnClickListener {
-//            val chatModel = ChatModel()
-//            val chatUser = chatModel.users.toMutableMap()
-//            chatUser[uid!!] = true
-//            chatUser[destinationUid!!] = true
+//        button = findViewById(R.id.messageactivity_button)
+//        editText = findViewById(R.id.messageactivity_edittext)
+//        recyclerView = findViewById(R.id.messageactivity_recyclerview)
+        binding.messageactivityButton.setOnClickListener {
+    //            val chatModel = ChatModel()
+    //            val chatUser = chatModel.users.toMutableMap()
+    //            chatUser[uid!!] = true
+    //            chatUser[destinationUid!!] = true
             val chat = mutableMapOf<String, Boolean>()
             chat[uid!!] = true
             chat[destinationUid!!] = true
             if (chatRoomUid == null) {
-                button!!.setEnabled(false)
+                binding.messageactivityButton.setEnabled(false)
                 FirebaseDatabase.getInstance().reference.child("chatrooms").push()
                     .child("users")
                     .setValue(chat).addOnSuccessListener {
@@ -59,11 +62,11 @@ class MessageActivity : AppCompatActivity() {
     fun sendMsg() {
         val comment: ChatModel.Comment = ChatModel.Comment()
         comment.uid = uid
-        comment.message = editText?.text.toString()
+        comment.message = binding.messageactivityEdittext.text.toString()
         comment.timestamp = ServerValue.TIMESTAMP
         FirebaseDatabase.getInstance().reference.child("chatrooms").child(chatRoomUid!!)
             .child("comments").push().setValue(comment).addOnCompleteListener {
-                editText?.setText("")
+                binding.messageactivityEdittext?.setText("")
             }
     }
 
@@ -75,13 +78,13 @@ class MessageActivity : AppCompatActivity() {
                         val chatModel: ChatModel? = item.getValue(ChatModel::class.java)
                         if (chatModel?.users?.containsKey(destinationUid) == true) {
                             chatRoomUid = item.key
-                            button!!.isEnabled = true
-                            recyclerView!!.layoutManager = LinearLayoutManager(this@MessageActivity)
-                            recyclerView!!.adapter = RecyclerViewAdapter(chatRoomUid,
-                                recyclerView!!, uid, destinationUid
+                            binding.messageactivityButton.isEnabled = true
+                            binding.messageactivityRecyclerview.layoutManager = LinearLayoutManager(this@MessageActivity)
+                            binding.messageactivityRecyclerview.adapter = RecyclerViewAdapter(chatRoomUid,
+                                binding.messageactivityRecyclerview, uid, destinationUid
                             )
 
-                            if (editText?.text?.isNotEmpty() == true) {
+                            if (binding.messageactivityEdittext.text?.isNotEmpty() == true) {
                                 sendMsg()
                             }
                         }

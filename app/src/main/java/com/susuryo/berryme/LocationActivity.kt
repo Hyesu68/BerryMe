@@ -21,11 +21,14 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
-import kotlinx.android.synthetic.main.activity_location.*
-import kotlinx.android.synthetic.main.activity_setting.back_button
+import com.susuryo.berryme.databinding.ActivityLocationBinding
+
+//import kotlinx.android.synthetic.main.activity_location.*
+//import kotlinx.android.synthetic.main.activity_setting.back_button
 
 class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
-    private lateinit var mapView: MapView
+    private lateinit var binding: ActivityLocationBinding
+//    private lateinit var mapView: MapView
     private var mFusedLocationProviderClient: FusedLocationProviderClient? = null // 현재 위치를 가져오기 위한 변수
     lateinit var mLastLocation: Location // 위치 값을 가지고 있는 객체
     private lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
@@ -34,13 +37,14 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_location)
+        binding = ActivityLocationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         overridePendingTransition(R.anim.fromright, R.anim.none)
 
-        mapView = findViewById(R.id.locationactivity_map)
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
+//        mapView = findViewById(R.id.locationactivity_map)
+        binding.locationactivityMap.onCreate(savedInstanceState)
+        binding.locationactivityMap.getMapAsync(this)
 
         mLocationRequest =  LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
@@ -54,7 +58,7 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
 
-        back_button.setOnClickListener {
+        binding.backButton.setOnClickListener {
             onBackPressed()
         }
     }
@@ -76,17 +80,17 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onStart() {
         super.onStart()
-        mapView.onStart()
+        binding.locationactivityMap.onStart()
     }
 
     override fun onStop() {
-        mapView.onStop()
+        binding.locationactivityMap.onStop()
         super.onStop()
     }
 
     override fun onResume() {
         super.onResume()
-        mapView.onResume()
+        binding.locationactivityMap.onResume()
     }
 
     lateinit var googleMap: GoogleMap
@@ -159,8 +163,8 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
         )
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 //        googleMap.animateCamera(CameraUpdateFactory.zoomTo(13F))
-        locationactivity_progressbar.visibility = View.GONE
-        locationactivity_map_icon.visibility = View.VISIBLE
+        binding.locationactivityProgressbar.visibility = View.GONE
+        binding.locationactivityMapIcon.visibility = View.VISIBLE
     }
 
     // 위치 권한이 있는지 확인하는 메서드

@@ -9,33 +9,36 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import kotlinx.android.synthetic.main.activity_login.*
+import com.susuryo.berryme.databinding.ActivityLoginBinding
+
+//import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
-
+    private lateinit var binding: ActivityLoginBinding
     private var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
-    private var id: EditText? = null
-    private var password: EditText? = null
+//    private var id: EditText? = null
+//    private var password: EditText? = null
     private var firebaseAuth: FirebaseAuth? = null
     private var authStateListener: AuthStateListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         firebaseAuth = FirebaseAuth.getInstance()
         //        firebaseAuth.signOut();
 //        val splash_background = mFirebaseRemoteConfig!!.getString(getString(R.string.rc_color))
 //        window.statusBarColor = Color.parseColor(splash_background)
-        id = findViewById(R.id.loginActivity_edittext_id)
-        password = findViewById(R.id.loginActivity_edittext_password)
+//        binding.loginActivityEdittextId = findViewById(R.id.loginActivity_edittext_id)
+//        binding.loginActivityEdittextPasswordpassword = findViewById(R.id.loginActivity_edittext_password)
 
-        loginActivity_button_login.setOnClickListener {
+        binding.loginActivityButtonLogin.setOnClickListener {
             loginEvent()
         }
 //        loginActivity_button_login.setBackgroundColor(Color.parseColor(splash_background))
 //        loginActivity_button_signup.setBackgroundColor(Color.parseColor(splash_background))
-        loginActivity_button_signup.setOnClickListener(View.OnClickListener {
+        binding.loginActivityButtonSignup.setOnClickListener(View.OnClickListener {
             startActivity(
                 Intent(
                     this@LoginActivity,
@@ -59,10 +62,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginEvent() {
-        if (id?.text.toString() != "" && password?.text.toString() != "") {
+        if (binding.loginActivityEdittextId.text.toString() != "" && binding.loginActivityEdittextPassword.text.toString() != "") {
             firebaseAuth!!.signInWithEmailAndPassword(
-                id!!.text.toString(),
-                password!!.text.toString()
+                binding.loginActivityEdittextId.text.toString(),
+                binding.loginActivityEdittextPassword.text.toString()
             )
                 .addOnCompleteListener { task ->
                     if (!task.isSuccessful) {

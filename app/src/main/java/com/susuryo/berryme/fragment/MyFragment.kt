@@ -19,26 +19,32 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.susuryo.berryme.*
+import com.susuryo.berryme.databinding.ActivityMemberBinding
+import com.susuryo.berryme.databinding.FragmentCameraBinding
+//import com.susuryo.berryme.databinding.FragmentCameraBinding
 import com.susuryo.berryme.model.UserModel
-import kotlinx.android.synthetic.main.activity_member.*
+//import kotlinx.android.synthetic.main.activity_member.*
 import java.util.ArrayList
 
 class MyFragment : Fragment() {
+    private var _binding: ActivityMemberBinding? = null
+    private val binding get() = _binding!!
     lateinit var user: UserModel
-    lateinit var name: TextView
-    lateinit var profile: ImageView
-    lateinit var info: TextView
+//    lateinit var name: TextView
+//    lateinit var profile: ImageView
+//    lateinit var info: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view : View = inflater.inflate(R.layout.activity_member, container, false)
+//        val view : View = inflater.inflate(R.layout.activity_member, container, false)
+        _binding = ActivityMemberBinding.inflate(inflater, container, false)
         user = UserObject.userModel
-        name = view.findViewById(R.id.memberactivity_textview_name)
-        profile = view.findViewById(R.id.memberactivity_imageview_profile)
-        info = view.findViewById(R.id.memberactivity_textview_info)
+//        name = view.findViewById(R.id.memberactivity_textview_name)
+//        profile = view.findViewById(R.id.memberactivity_imageview_profile)
+//        info = view.findViewById(R.id.memberactivity_textview_info)
 
         val circularProgressDrawable = CircularProgressDrawable(requireContext())
         circularProgressDrawable.strokeWidth = 5f
@@ -48,10 +54,10 @@ class MyFragment : Fragment() {
             .load(UserObject.userModel?.profileImageUrl)
             .apply(RequestOptions().circleCrop())
             .placeholder(circularProgressDrawable)
-            .into(profile)
-        name.text = UserObject.userModel?.username
-        info.text = UserObject.userModel?.info
-        return view
+            .into(binding.memberactivityImageviewProfile)
+        binding.memberactivityTextviewName.text = UserObject.userModel?.username
+        binding.memberactivityTextviewInfo.text = UserObject.userModel?.info
+        return binding.root
     }
 
     override fun onResume() {
@@ -72,10 +78,10 @@ class MyFragment : Fragment() {
                         .load(userTmp?.profileImageUrl)
                         .apply(RequestOptions().circleCrop())
                         .placeholder(circularProgressDrawable)
-                        .into(profile)
+                        .into(binding.memberactivityImageviewProfile)
 
-                    name.text = userTmp?.username
-                    info.text = userTmp?.info
+                    binding.memberactivityTextviewName.text = userTmp?.username
+                    binding.memberactivityTextviewInfo.text = userTmp?.info
                 }
 
                 override fun onCancelled(error: DatabaseError) {}
@@ -93,21 +99,21 @@ class MyFragment : Fragment() {
 
 //                    pictures?.reverse()
                     if (pictures.size == 0) {
-                        memberactivity_nopicture_linearlayout.visibility = View.VISIBLE
-                        memberactivity_gridview.visibility = View.GONE
+                        binding.memberactivityNopictureLinearlayout.visibility = View.VISIBLE
+                        binding.memberactivityGridview.visibility = View.GONE
 
-                        memberactivity_nopicture_linearlayout.setOnClickListener {
+                        binding.memberactivityNopictureLinearlayout.setOnClickListener {
                             val mActivity = activity as MainActivity
                             mActivity.setFragment(R.id.action_camera)
                         }
                     } else {
-                        memberactivity_nopicture_linearlayout.visibility = View.GONE
-                        memberactivity_gridview.visibility = View.VISIBLE
-                        memberactivity_gridview?.adapter = MemberActivityGridViewAdapter(
+                        binding.memberactivityNopictureLinearlayout.visibility = View.GONE
+                        binding.memberactivityGridview.visibility = View.VISIBLE
+                        binding.memberactivityGridview.adapter = MemberActivityGridViewAdapter(
                             requireContext(),
                             pictures
                         )
-                        memberactivity_gridview.isExpanded = true
+                        binding.memberactivityGridview.isExpanded = true
                     }
                 }
 
