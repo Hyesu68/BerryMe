@@ -147,17 +147,20 @@ class ListFragment : Fragment() {
                         holder.likeAnimation.visibility = View.VISIBLE
                         holder.likeAnimation.playAnimation()
                         holder.likeAnimation.addAnimatorListener(object : Animator.AnimatorListener {
-                            override fun onAnimationStart(p0: Animator?) {
+                            override fun onAnimationStart(p0: Animator) {
+                                TODO("Not yet implemented")
                             }
 
-                            override fun onAnimationEnd(p0: Animator?) {
-                                holder.likeAnimation.visibility = View.GONE
+                            override fun onAnimationEnd(p0: Animator) {
+                                TODO("Not yet implemented")
                             }
 
-                            override fun onAnimationCancel(p0: Animator?) {
+                            override fun onAnimationCancel(p0: Animator) {
+                                TODO("Not yet implemented")
                             }
 
-                            override fun onAnimationRepeat(p0: Animator?) {
+                            override fun onAnimationRepeat(p0: Animator) {
+                                TODO("Not yet implemented")
                             }
                         })
 

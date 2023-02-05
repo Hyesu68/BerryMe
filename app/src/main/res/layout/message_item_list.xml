@@ -43,7 +43,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/new_icon"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/red900"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"/>
 

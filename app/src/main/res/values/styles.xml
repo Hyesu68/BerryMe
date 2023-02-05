@@ -1,11 +1,10 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryRipple</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryRipple</item>
-        <item name="colorAccent">@color/colorPrimaryRipple</item>
-        <item name="colorControlHighlight">@color/colorPrimaryRipple</item>
+        <item name="colorPrimary">@color/grey800</item>
+        <item name="colorPrimaryDark">@color/colorBlack</item>
+        <item name="colorSecondary">@color/red900</item>
     </style>
 
 </resources>

@@ -1,177 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SignupActivity"
-    android:orientation="vertical"
     android:background="@android:color/white">
 
-    <RelativeLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:elevation="15dp"
-        android:background="#e6000e">
-        <ImageView
-            android:id="@+id/back_button"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/back_icon"
-            android:layout_alignParentLeft="true"
-            android:paddingLeft="10dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="SIGN UP"
-            android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        app:layout_constraintVertical_chainStyle="packed">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="Sign Up"
+            app:titleTextColor="@color/quantum_white_100"
+            app:titleCentered="true"
+            android:background="@color/red900"
+            app:navigationIcon="@drawable/ic_arrow_white_24px"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".SignupActivity"
-        android:orientation="vertical"
-        android:background="@android:color/white">
-        <LinearLayout
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleBar"
+        android:fillViewport="true">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:src="@drawable/add_photo_icon"
-                    android:layout_gravity="center"/>
-                <ImageView
-                    android:id="@+id/signupActivity_imageview_profile"
+            tools:context=".SignupActivity"
+            android:background="@android:color/white">
+                <FrameLayout
+                    android:id="@+id/imageFrameLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/square_back"/>
-            </FrameLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/emailTextInput">
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/add_photo_icon"
+                        android:layout_gravity="center"/>
+                    <ImageView
+                        android:id="@+id/signupActivity_imageview_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/square_back"/>
+                </FrameLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="EMAIL"
-                android:textColor="@android:color/black"
-                android:textSize="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"/>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
-                <EditText
-                    android:id="@+id/signupActivity_edittext_email"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/emailTextInput"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/round"
-                    android:padding="5dp"
-                    android:textColor="@android:color/black"
-                    android:singleLine="true"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:hint="email"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageFrameLayout"
+                    app:layout_constraintBottom_toTopOf="@+id/nameTextInput">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signupActivity_edittext_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@android:color/black"
+                        android:singleLine="true"
+                        android:inputType="textEmailAddress"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="NAME"
-                android:textColor="@android:color/black"
-                android:textSize="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"/>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
-                <EditText
-                    android:id="@+id/signupActivity_edittext_name"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/nameTextInput"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/round"
-                    android:padding="5dp"
-                    android:textColor="@android:color/black"
-                    android:singleLine="true"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:hint="name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/emailTextInput"
+                    app:layout_constraintBottom_toTopOf="@+id/passwordTextInput">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signupActivity_edittext_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@android:color/black"
+                        android:singleLine="true"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="PASSWORD"
-                android:textColor="@android:color/black"
-                android:textSize="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"/>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
-                <EditText
-                    android:id="@+id/signupActivity_edittext_password"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/passwordTextInput"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/round"
-                    android:padding="5dp"
-                    android:textColor="@android:color/black"
-                    android:singleLine="true"
-                    android:inputType="textPassword"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:hint="password"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/nameTextInput"
+                    app:layout_constraintBottom_toTopOf="@+id/infoTextInput">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signupActivity_edittext_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@android:color/black"
+                        android:singleLine="true"
+                        android:inputType="textPassword"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="INFORMATION"
-                android:textColor="@android:color/black"
-                android:textSize="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"/>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
-                <EditText
-                    android:id="@+id/signupActivity_edittext_info"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/infoTextInput"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/round"
-                    android:padding="5dp"
-                    android:textColor="@android:color/black"
-                    android:singleLine="true"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:hint="introduction"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/passwordTextInput"
+                    app:layout_constraintBottom_toTopOf="@+id/signupActivity_button_signup">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signupActivity_edittext_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@android:color/black"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/signupActivity_button_signup"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="sign up"
-                android:textSize="20dp"
-                android:textColor="@android:color/white"
-                android:backgroundTint="#e6000e"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
-        </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/signupActivity_button_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="sign up"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/infoTextInput"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <ProgressBar
-            android:id="@+id/signupactivity_progressbar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
-    </FrameLayout>
+            <ProgressBar
+                android:id="@+id/signupactivity_progressbar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

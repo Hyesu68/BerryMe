@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#e6000e</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="grey50">#FAFAFA</color>
+    <color name="grey800">#424242</color>
+    <color name="red900">#B71C1C</color>
+    <color name="colorBlack">#000000</color>
     <color name="colorPrimaryPoint">#009688</color>
     <color name="colorPrimaryRipple">#42009688</color>
+    <color name="shrine_pink_900">#880E4F</color>
 </resources>

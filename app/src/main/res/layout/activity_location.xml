@@ -47,7 +47,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/map_icon"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/red900"
             android:layout_gravity="center"
             android:visibility="gone"
             android:layout_marginBottom="25dp"/>
@@ -79,7 +79,7 @@
             android:text="SET LOCATION"
             android:textColor="@android:color/white"
             android:textSize="20dp"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/red900"
             android:layout_margin="5dp"/>
     </LinearLayout>
 

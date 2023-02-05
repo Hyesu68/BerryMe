@@ -2,24 +2,24 @@ package com.susuryo.berryme
 
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
-import android.view.Window
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.storage.FirebaseStorage
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.normal.TedPermission
 import com.susuryo.berryme.databinding.ActivitySignupBinding
 import com.susuryo.berryme.model.UserModel
 import java.io.File
@@ -27,9 +27,9 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
-    private var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
     private var imageUri: Uri? = null
     var dialog: Dialog? = null
 
@@ -38,76 +38,101 @@ class SignupActivity : AppCompatActivity() {
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        val splash_backgrond = mFirebaseRemoteConfig!!.getString(getString(R.string.rc_color))
         binding.signupActivityImageviewProfile.setOnClickListener(View.OnClickListener {
-            dialog = Dialog(SignupActivity@this)
-            dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog?.setContentView(R.layout.dialog_camera)
-
-            val gallery = dialog?.findViewById<TextView>(R.id.cameradialog_gallery_textview)
-            gallery?.setOnClickListener {
-                val intent = Intent(Intent.ACTION_PICK)
-                intent.type = MediaStore.Images.Media.CONTENT_TYPE
-                startActivityForResult(intent, PICK_FROM_ALBUM)
-            }
-
-            val camera = dialog?.findViewById<TextView>(R.id.cameradialog_camera_textview)
-            camera?.setOnClickListener {
-                dispatchTakePictureIntent()
-            }
-
-            dialog?.show()
+            val items = arrayOf("Gallery", "Camera")
+            MaterialAlertDialogBuilder(this)
+                .setTitle("CHOOSE")
+                .setItems(items) { dialog, which ->
+                    // Do something for item chosen
+                    when (which) {
+                        0 -> {
+                            val intent = Intent(Intent.ACTION_PICK)
+                            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+                            startActivityForResult(intent, PICK_FROM_ALBUM)
+                        }
+                        1 -> {
+                            dispatchTakePictureIntent()
+                        }
+                    }
+                }
+                .setNegativeButton("cancel") { dialog, which ->
+                    dialog.dismiss()
+                }
+                .show()
         })
 
-        binding.backButton.setOnClickListener {
-            onBackPressed()
+        binding.toolBar.setNavigationOnClickListener {
+            finish()
         }
 
-        binding.signupActivityButtonSignup.setBackgroundColor(Color.parseColor(splash_backgrond))
-        binding.signupActivityButtonSignup.setOnClickListener(View.OnClickListener {
-            if (binding.signupActivityEdittextEmail.getText().toString() == null
-                || binding.signupActivityEdittextName.getText().toString() == null
-                || binding.signupActivityEdittextPassword.getText().toString() == null
-                || imageUri == null
-            ) {
-                return@OnClickListener
-            }
+        binding.signupActivityButtonSignup.setOnClickListener { signUp() }
+    }
 
-            binding.signupactivityProgressbar.visibility = View.VISIBLE
-            FirebaseAuth.getInstance()
-                .createUserWithEmailAndPassword(
-                    binding.signupActivityEdittextEmail.getText().toString(),
-            binding.signupActivityEdittextPassword.getText().toString()
-            )
-                .addOnCompleteListener(this@SignupActivity) { task ->
-                    //                            String uid = task.getResult().getUser().getUid();
-                    val uid = task.result.user!!.uid
-                    FirebaseStorage.getInstance()
-                        .reference.child("userImages").child(uid).putFile(imageUri!!)
-                        .addOnCompleteListener { task -> //                                                @SuppressWarnings("VisibleForTests")
-//                                                String imageUrl = task.getResult().getStorage().getDownloadUrl().toString();
-                            val result = task.result.storage.downloadUrl
-                            result.addOnSuccessListener { uri ->
-                                val imageUri = uri.toString()
+    private fun signUp() {
+        val email = binding.emailTextInput.editText?.text.toString()
+        val name = binding.nameTextInput.editText?.text.toString()
+        val password = binding.passwordTextInput.editText?.text.toString()
+        val introduction = binding.infoTextInput.editText?.text.toString()
 
-                                val userModel = UserModel()
-                                userModel.username = binding.signupActivityEdittextName.getText().toString()
-                                userModel.profileImageUrl = imageUri
-                                userModel.uid = FirebaseAuth.getInstance().getCurrentUser()!!.uid
-                                userModel.info = binding.signupActivityEdittextInfo.text.toString()
-                                userModel.email = binding.signupActivityEdittextEmail.text.toString()
+        if (email.isEmpty()) {
+            binding.emailTextInput.error = "Email must not be empty"
+        }
+        if (name.isEmpty()) {
+            binding.nameTextInput.error = "Name must not be empty"
+        }
+        if (password.isEmpty()) {
+            binding.passwordTextInput.error = "Password must not be empty"
+        }
+        if (introduction.isEmpty()) {
+            binding.infoTextInput.error = "Introduction must not be empty"
+        }
+        if (imageUri == null) {
+            showErrorDialog("You must upload a profile picture")
+        }
 
-                                FirebaseDatabase.getInstance().reference.child("users").child(uid)
-                                    .setValue(userModel)
-                                    .addOnSuccessListener {
-                                        binding.signupactivityProgressbar.visibility = View.GONE
-                                        finish()
-                                    }
-                            }
+        if (email.isNotEmpty() && name.isNotEmpty() && password.isNotEmpty() && introduction.isNotEmpty() && imageUri != null) {
+            askFirebaseSignUp()
+        }
+    }
+
+    private fun askFirebaseSignUp() {
+        binding.signupactivityProgressbar.visibility = View.VISIBLE
+        FirebaseAuth.getInstance()
+            .createUserWithEmailAndPassword(
+                binding.emailTextInput.editText?.text.toString(),
+                binding.passwordTextInput.editText?.text.toString())
+            .addOnCompleteListener(this@SignupActivity) { task ->
+                val uid = task.result.user!!.uid
+                FirebaseStorage.getInstance()
+                    .reference.child("userImages").child(uid).putFile(imageUri!!)
+                    .addOnCompleteListener { task ->
+                        val result = task.result.storage.downloadUrl
+                        result.addOnSuccessListener { uri ->
+                            val imageUri = uri.toString()
+                            val userModel = UserModel()
+                            userModel.username = binding.nameTextInput.editText?.text.toString()
+                            userModel.profileImageUrl = imageUri
+                            userModel.uid = FirebaseAuth.getInstance().currentUser!!.uid
+                            userModel.info = binding.infoTextInput.editText?.text.toString()
+                            userModel.email = binding.emailTextInput.editText?.text.toString()
+
+                            FirebaseDatabase.getInstance().reference.child("users").child(uid)
+                                .setValue(userModel)
+                                .addOnSuccessListener {
+                                    binding.signupactivityProgressbar.visibility = View.GONE
+                                    finish()
+                                }
                         }
-                }
-        })
+                    }
+            }
+    }
+
+    private fun showErrorDialog(str : String) {
+        AlertDialog.Builder(this)
+            .setTitle("Signup Failed")
+            .setMessage(str)
+            .setPositiveButton("OK") { dialog, which -> dialog.dismiss()}
+            .show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -143,10 +168,6 @@ class SignupActivity : AppCompatActivity() {
             applicationContext.sendBroadcast(mediaScanIntent)
         }
 
-//        BitmapFactory.decodeFile(currentPhotoPath)?.also { bitmap ->
-//            signupActivity_imageview_profile.setImageBitmap(bitmap)
-//        }
-
         val circularProgressDrawable = CircularProgressDrawable(applicationContext)
         circularProgressDrawable.strokeWidth = 5f
         circularProgressDrawable.centerRadius = 30f
@@ -163,7 +184,7 @@ class SignupActivity : AppCompatActivity() {
         private const val REQUEST_TAKE_PHOTO = 1
     }
 
-    lateinit var currentPhotoPath: String
+    private lateinit var currentPhotoPath: String
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
@@ -181,24 +202,45 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun dispatchTakePictureIntent() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(applicationContext.packageManager)?.also {
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (ex: IOException) {
-                    null
-                }
+        val permissionlistener: PermissionListener = object : PermissionListener {
+            override fun onPermissionGranted() {
+//                Toast.makeText(this@SignupActivity, "Permission Granted", Toast.LENGTH_SHORT).show()
 
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        applicationContext,
-                        "com.susuryo.berryme.fileprovider",
-                        it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                    takePictureIntent.resolveActivity(applicationContext.packageManager)?.also {
+                        val photoFile: File? = try {
+                            createImageFile()
+                        } catch (ex: IOException) {
+                            null
+                        }
+
+                        photoFile?.also {
+                            val photoURI: Uri = FileProvider.getUriForFile(
+                                applicationContext,
+                                "com.susuryo.berryme.fileprovider",
+                                it
+                            )
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+                        }
+                    }
                 }
             }
+
+            override fun onPermissionDenied(deniedPermissions: List<String>) {
+                Toast.makeText(
+                    this@SignupActivity,
+                    "Permission Denied\n$deniedPermissions",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
+
+        TedPermission.create()
+            .setPermissionListener(permissionlistener)
+            .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+            .setPermissions(android.Manifest.permission.CAMERA)
+            .check()
+
     }
 }

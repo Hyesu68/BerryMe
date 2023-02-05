@@ -190,17 +190,21 @@ class DetailActivity : AppCompatActivity() {
                                 binding.listitemAnimationLike.visibility = View.VISIBLE
                                 binding.listitemAnimationLike.playAnimation()
                                 binding.listitemAnimationLike.addAnimatorListener(object : Animator.AnimatorListener {
-                                    override fun onAnimationStart(p0: Animator?) {
+
+                                    override fun onAnimationStart(p0: Animator) {
+                                        TODO("Not yet implemented")
                                     }
 
-                                    override fun onAnimationEnd(p0: Animator?) {
-                                        binding.listitemAnimationLike.visibility = View.GONE
+                                    override fun onAnimationEnd(p0: Animator) {
+                                        TODO("Not yet implemented")
                                     }
 
-                                    override fun onAnimationCancel(p0: Animator?) {
+                                    override fun onAnimationCancel(p0: Animator) {
+                                        TODO("Not yet implemented")
                                     }
 
-                                    override fun onAnimationRepeat(p0: Animator?) {
+                                    override fun onAnimationRepeat(p0: Animator) {
+                                        TODO("Not yet implemented")
                                     }
                                 })
                                 FirebaseDatabase.getInstance().reference.child("pictures")
