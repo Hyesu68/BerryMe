@@ -13,12 +13,14 @@ The android application lets you :
 - Leave a comment and press like to communicate with other users.
 
 ## ScreenShots
-<img src="https://user-images.githubusercontent.com/40760917/216804735-0c7fb343-d5c7-45d9-94c2-46d831db3358.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/216804746-c1e25f54-751d-4726-a744-5bf8ee7e3ce2.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/191666449-4cc32593-2389-4ca6-9276-8729929abae0.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/191666550-4e09ded2-402e-44b9-9862-08f3bcbfb8fd.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/191666577-20b442aa-d37b-4f57-9206-7e968b0e3cbf.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/191666610-aa83f515-e532-4ffa-8c4a-5261131b6c60.jpg" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/222328804-8372b22a-442a-4303-a3c1-b95766947f43.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/222328922-045f97ff-a856-423d-a36c-070f797fd5ba.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/222328960-4d5e8c25-76b0-45f8-9c1e-5b7d39dfe1db.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/222328990-2c717127-c5aa-4cd8-b2fe-30e55d001386.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/222329026-c6a6c3e1-0341-4d94-b674-bdfc2abd0992.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/222329160-4a9d610d-18d5-4cca-b7b4-92603b21744a.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/222329057-aafe9039-ba87-4519-b6d3-18ce47cc9e9b.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/222329262-16670f3a-db73-49fd-9ac1-220cc0463350.jpg" width="200" hspace="10" vspace="10">
 
 ## Permissions
 BerryMe requires the following permissions:
