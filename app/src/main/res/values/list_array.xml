@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="list_me">
-        <item>DELETE</item>
+        <item>@string/delete</item>
     </string-array>
     <string-array name="list_other">
-        <item>REPORT</item>
+        <item>@string/report</item>
     </string-array>
 </resources>

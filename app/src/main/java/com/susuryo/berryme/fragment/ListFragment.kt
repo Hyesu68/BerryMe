@@ -23,6 +23,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.ddd.androidutils.DoubleClick
 import com.ddd.androidutils.DoubleClickListener
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.susuryo.berryme.*
 import com.susuryo.berryme.R
 import com.susuryo.berryme.model.PictureModel
@@ -80,13 +82,7 @@ class ListFragment : Fragment() {
                 .placeholder(circularProgressDrawable)
                 .into((holder as CustomViewHolder).pictureImageView)
 
-//            for (i: String in pictureModels[position]?.Likes!!) {
-//                if (UserObject.userModel.uid == i) {
-//                    isLiked[position] = true
-//                }
-//            }
-
-            if (pictureModels[position]?.Likes?.containsKey(UserObject.userModel.uid) == true) {
+            if (pictureModels[position]?.Likes?.containsKey(UserObject.userModel?.uid) == true) {
                 holder.heartImageView.setImageDrawable(
                     context.resources.getDrawable(
                         R.drawable.icon_love_filled,
@@ -101,15 +97,13 @@ class ListFragment : Fragment() {
                 }
 
                 override fun onDoubleClickEvent(view: View?) {
-//                    Toast.makeText(context, "heart!", Toast.LENGTH_SHORT).show()
-//                    Log.d("hsleedebug", "doubleclick")
-                    if (pictureModels[position]?.Likes?.containsKey(UserObject.userModel.uid) == true) {
+                    if (pictureModels[position]?.Likes?.containsKey(UserObject.userModel?.uid) == true) {
                         var likeNum = pictureModels[position]?.Likes?.size?.minus(1)
                         if (likeNum == null || likeNum < 0) {
                             likeNum = 0
                         }
                         holder.likeNumTextView.text = likeNum.toString()
-                        pictureModels[position]?.Likes?.remove(UserObject.userModel.uid)
+                        pictureModels[position]?.Likes?.remove(UserObject.userModel?.uid)
                         holder.heartImageView.setImageDrawable(
                             context.resources.getDrawable(
                                 R.drawable.icon_love_blank,
@@ -117,26 +111,16 @@ class ListFragment : Fragment() {
                             )
                         )
 
-                        FirebaseDatabase.getInstance().reference.child("pictures")
-                            .child(pictureModels[position]?.pictureKey!!).child("Likes").child(UserObject.userModel.uid!!)
+                        Firebase.database.getReference("pictures")
+                            .child(pictureModels[position]?.pictureKey!!).child("Likes").child(UserObject.userModel?.uid!!)
                             .removeValue()
-                            .addOnSuccessListener {
-
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(
-                                    activity.applicationContext,
-                                    "문제가 발생하였습니다. 잠시 후 다시 시도하세요.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
                     } else {
                         var likeNum = pictureModels[position]?.Likes?.size?.plus(1)
                         if (likeNum == null || likeNum < 0) {
                             likeNum = 0
                         }
                         holder.likeNumTextView.text = likeNum.toString()
-                        pictureModels[position]?.Likes?.put(UserObject.userModel.uid!!, true)
+                        pictureModels[position]?.Likes?.put(UserObject.userModel?.uid!!, true)
                         holder.heartImageView.setImageDrawable(
                             context.resources.getDrawable(
                                 R.drawable.icon_love_filled,
@@ -147,29 +131,20 @@ class ListFragment : Fragment() {
                         holder.likeAnimation.visibility = View.VISIBLE
                         holder.likeAnimation.playAnimation()
                         holder.likeAnimation.addAnimatorListener(object : Animator.AnimatorListener {
-                            override fun onAnimationStart(p0: Animator) {
-                                TODO("Not yet implemented")
-                            }
+                            override fun onAnimationStart(p0: Animator) { }
 
                             override fun onAnimationEnd(p0: Animator) {
-                                TODO("Not yet implemented")
+                                holder.likeAnimation.visibility = View.GONE
                             }
 
-                            override fun onAnimationCancel(p0: Animator) {
-                                TODO("Not yet implemented")
-                            }
+                            override fun onAnimationCancel(p0: Animator) { }
 
-                            override fun onAnimationRepeat(p0: Animator) {
-                                TODO("Not yet implemented")
-                            }
+                            override fun onAnimationRepeat(p0: Animator) { }
                         })
 
-                        FirebaseDatabase.getInstance().reference.child("pictures")
+                        Firebase.database.getReference("pictures")
                             .child(pictureModels[position]?.pictureKey!!).child("Likes")
-                            .child(UserObject.userModel.uid!!).setValue(true)
-                            .addOnSuccessListener {
-
-                            }
+                            .child(UserObject.userModel?.uid!!).setValue(true)
                     }
                 }
             })
@@ -222,7 +197,7 @@ class ListFragment : Fragment() {
             holder.timeTextView.text = simpleDateFormat.format(date)
 
             holder.profileImageView.setOnClickListener { view ->
-                FirebaseDatabase.getInstance().reference.child("users")
+                Firebase.database.getReference("users")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             for (snapshot in dataSnapshot.children) {
@@ -253,7 +228,7 @@ class ListFragment : Fragment() {
 //            var uid = FirebaseAuth.getInstance().currentUser!!.uid //채팅 요구하는 아이디
             holder.menuImageView.visibility = View.VISIBLE
             holder.menuImageView.setOnClickListener {
-                showDialog(pictureModels[position]?.pictureKey, pictureModels[position]?.uid == UserObject.userModel.uid)
+                showDialog(pictureModels[position]?.pictureKey, pictureModels[position]?.uid == UserObject.userModel?.uid)
             }
         }
 
@@ -276,25 +251,17 @@ class ListFragment : Fragment() {
         }
 
         init {
-            FirebaseDatabase.getInstance().reference.child("pictures")
+            Firebase.database.getReference("pictures")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         pictureModels.clear()
                         for (snapshot in dataSnapshot.children) {
-                            /*val userModel: UserModel? = snapshot.getValue(UserModel::class.java)
-                            if (userModel?.uid.equals(myUid)) {
-                                continue
-                            }*/
                             var picValue: PictureModel? = snapshot.getValue(PictureModel::class.java)
                             picValue?.pictureKey = snapshot.key
                             pictureModels.add(picValue)
-//                            isLiked.add(false)
-//                            likesMap[picValue?.pictureKey!!] = picList
                         }
-//                        pictureModels.reverse()
-
                         for (i: Int in 0 until pictureModels.size) {
-                            FirebaseDatabase.getInstance().reference.child("users").child(pictureModels[i]?.uid!!)
+                            Firebase.database.getReference("users").child(pictureModels[i]?.uid!!)
                                 .addValueEventListener(object : ValueEventListener {
                                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                                         val userTmp: UserModel? = dataSnapshot.getValue(UserModel::class.java)
@@ -329,45 +296,17 @@ class ListFragment : Fragment() {
             builder.setItems(menu) { dialog, which ->
                 if (key != null) {
                     if (isMe) {
-                        FirebaseDatabase.getInstance().reference.child("pictures").child(key)
+                        Firebase.database.getReference("pictures").child(key)
                             .removeValue()
                             .addOnSuccessListener {
-                                FirebaseDatabase.getInstance().reference.child("users")
-                                    .child(UserObject.userModel.uid!!).child("Pictures").child(key)
+                                Firebase.database.getReference("users")
+                                    .child(UserObject.userModel?.uid!!).child("Pictures").child(key)
                                     .removeValue()
-                                    .addOnSuccessListener {
-                                        Toast.makeText(
-                                            activity.applicationContext,
-                                            "삭제되었습니다.",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                    .addOnFailureListener {
-                                        Toast.makeText(
-                                            activity.applicationContext,
-                                            "문제가 발생하였습니다. 잠시 후 다시 시도하세요.",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(
-                                    activity.applicationContext,
-                                    "문제가 발생하였습니다. 잠시 후 다시 시도하세요.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             }
                     } else {
-                        FirebaseDatabase.getInstance().reference.child("report").child(key)
-                            .child(UserObject.userModel.uid!!)
+                        Firebase.database.getReference("report").child(key)
+                            .child(UserObject.userModel?.uid!!)
                             .setValue(true)
-                            .addOnSuccessListener{
-                                Toast.makeText(
-                                    activity.applicationContext,
-                                    "신고되었습니다.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
                     }
                 }
             }

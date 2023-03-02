@@ -40,10 +40,6 @@ class MessageFragment : Fragment() {
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     internal class ChatRecyclerViewAdapter(_activity : Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd hh:ss")
 
@@ -144,17 +140,7 @@ class MessageFragment : Fragment() {
                         for (item in snapshot.children) {
                             chatModels.add(item.getValue(ChatModel::class.java))
                         }
-//                        chatModels.reverse()
-/*
-                        val sortedChatrooms = chatModels.sortedByDescending {
-                            val comments = it?.comments
-                            if (comments != null) {
-                                val lastComment = comments.values.maxBy { it.timestamp as Long }
-                                lastComment?.timestamp ?: 0
-                            } else {
-                                0
-                            }
-                        }*/
+
                         notifyDataSetChanged()
                     }
 

@@ -39,39 +39,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/quantum_grey"/>
-<!--
 
-            <TextView
-                android:id="@+id/camerafragment_value_title"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/captionInput"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="10dp"
-                android:text="내용을 입력하세요."
-                android:textColor="@android:color/darker_gray" />
--->
-
-            <EditText
-                android:id="@+id/camerafragment_edittext_text"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_margin="10dp"
-                android:background="@null"
-                android:hint="Write a caption"
-                android:gravity="left|top"
-                android:textColorHint="@color/quantum_grey"
-                android:textColor="@android:color/black" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/quantum_grey"/>
+                android:hint="@string/write_caption"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="20dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
                 android:id="@+id/camerafragment_location_relativelayout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -89,22 +77,15 @@
                     android:layout_centerVertical="true"/>
             </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/quantum_grey"/>
-
-            <Button
-                android:id="@+id/camerafragment_button_register"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/shareButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="5dp"
-                android:backgroundTint="#e6000e"
-                android:text="Upload"
-                android:textColor="@android:color/white"
-                android:textSize="20dp" />
+                android:text="@string/share"
+                android:textColor="@android:color/white" />
         </LinearLayout>
     </ScrollView>
 

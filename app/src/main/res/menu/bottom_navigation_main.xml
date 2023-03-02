@@ -7,13 +7,13 @@
         android:title=""/>
 
     <item
-        android:id="@+id/action_camera"
-        android:icon="@drawable/camera_icon"
+        android:id="@+id/action_all"
+        android:icon="@drawable/search_icon"
         android:title=""/>
 
     <item
-        android:id="@+id/action_message"
-        android:icon="@drawable/icon_message"
+        android:id="@+id/action_camera"
+        android:icon="@drawable/camera_icon"
         android:title=""/>
 
     <item

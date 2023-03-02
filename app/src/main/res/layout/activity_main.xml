@@ -7,38 +7,27 @@
     tools:context=".MainActivity"
     android:background="@android:color/white">
 
-    <RelativeLayout
-        android:id="@+id/mainactivity_titlebar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:elevation="15dp"
-        android:background="#e6000e">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="BerryMe"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:paddingLeft="30dp"
-            android:layout_alignParentLeft="true"/>
-        <ImageView
-            android:id="@+id/mainactibity_setting"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/berryme_berry_white"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"/>
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="BerryMe"
+            app:titleTextColor="@color/quantum_white_100"
+            android:background="@color/red900"
+            app:menu="@menu/main_menu"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/mainactivity_framelayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_above="@+id/mainactivity_bottomnavigationview"
-        android:layout_below="@+id/mainactivity_titlebar"
+        android:layout_below="@+id/titleBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 

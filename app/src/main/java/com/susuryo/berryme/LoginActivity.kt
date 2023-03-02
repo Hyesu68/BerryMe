@@ -5,19 +5,15 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.susuryo.berryme.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
 
     private var firebaseAuth: FirebaseAuth? = null
     private var authStateListener: AuthStateListener? = null
@@ -27,7 +23,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         firebaseAuth = FirebaseAuth.getInstance()
 
         binding.loginActivityButtonLogin.setOnClickListener {

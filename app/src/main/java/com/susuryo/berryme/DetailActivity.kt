@@ -21,8 +21,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.ddd.androidutils.DoubleClick
 import com.ddd.androidutils.DoubleClickListener
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import com.susuryo.berryme.databinding.ActivityDetailBinding
+import com.susuryo.berryme.model.ChatModel
 import com.susuryo.berryme.model.PictureModel
+import com.susuryo.berryme.model.UserModel
 //import kotlinx.android.synthetic.main.activity_detail.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,12 +36,11 @@ import kotlin.collections.ArrayList
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailBinding
     private var destinationUid: String? = null
-    private var name: String? = null
-    private var profile: String? = null
     private var picuid: String? = null
-    var picValue: PictureModel? = null
     var likesNum = 0
     lateinit var imm: InputMethodManager
+    private lateinit var dUser : UserModel
+    private lateinit var picValue: PictureModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,32 +52,28 @@ class DetailActivity : AppCompatActivity() {
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         destinationUid = intent.getStringExtra("Uid")
-        name = intent.getStringExtra("name")
-        binding.listitemTextviewName.text = name
-        profile = intent.getStringExtra("profile")
-        var picurl = intent.getStringExtra("picurl")
+        Firebase.database.getReference("users").child(destinationUid!!)
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+//                    dUser = snapshot as UserModel
+                    dUser = snapshot.getValue(UserModel::class.java)!!
+                    binding.listitemTextviewName.text = dUser.username
+
+                    Glide.with(applicationContext)
+                        .load(dUser.profileImageUrl)
+                        .apply(RequestOptions().circleCrop())
+                        .into(binding.listitemImageviewProfile)
+
+                    binding.listitemTextviewName.text = dUser.username
+                    binding.listitemTextviewValuename.text = dUser.username
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+
         picuid = intent.getStringExtra("picuid")
-
-        val circularProgressDrawable = CircularProgressDrawable(applicationContext)
-        circularProgressDrawable.strokeWidth = 5f
-        circularProgressDrawable.centerRadius = 30f
-        circularProgressDrawable.start()
-
-        Glide.with(applicationContext)
-            .load(profile)
-            .apply(RequestOptions().circleCrop())
-            .placeholder(circularProgressDrawable)
-            .into(binding.listitemImageviewProfile)
-
-        binding.listitemTextviewName.text = name
-        binding.listitemTextviewValuename.text = name
-
-        Glide.with(applicationContext)
-            .load(picurl)
-            .apply(RequestOptions().centerCrop())
-            .placeholder(circularProgressDrawable)
-            .into(binding.listitemImageviewPicture)
-
         binding.backButton.setOnClickListener {
             onBackPressed()
         }
@@ -87,17 +87,23 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setDetail() {
-        FirebaseDatabase.getInstance().reference.child("pictures").child(picuid!!)
+        Firebase.database.getReference("pictures").child(picuid!!)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    picValue = dataSnapshot.getValue(PictureModel::class.java)
-                    picValue?.pictureKey = dataSnapshot.key
-                    binding.listitemTextviewValue.text = picValue?.value
-                    likesNum = if (picValue?.Likes != null) {
-                        picValue?.Likes?.size!!
+                    picValue = dataSnapshot.getValue(PictureModel::class.java)!!
+
+                    picValue.pictureKey = dataSnapshot.key
+                    binding.listitemTextviewValue.text = picValue.value
+                    likesNum = if (picValue.Likes != null) {
+                        picValue.Likes?.size!!
                     } else {
                         0
                     }
+
+                    Glide.with(applicationContext)
+                        .load(picValue.pictureImageUrl)
+                        .apply(RequestOptions().centerCrop())
+                        .into(binding.listitemImageviewPicture)
 
                     FirebaseDatabase.getInstance().reference.child("pictures").child(picuid!!).child("comment")
                         .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -111,7 +117,7 @@ class DetailActivity : AppCompatActivity() {
                                 }
                                 val commentListAdapter = CommentListAdapter(applicationContext, cmtArrayList)
                                 binding.detailactivityCommentListview.setOnItemLongClickListener { adapterView, view, i, l ->
-                                    showCommentDialog(picuid, cmtArrayList[i].key, UserObject.userModel.uid == cmtArrayList[i].uid)
+                                    showCommentDialog(picuid, cmtArrayList[i].key, UserObject.userModel?.uid == cmtArrayList[i].uid)
                                     return@setOnItemLongClickListener(true)
                                 }
                                 binding.detailactivityCommentListview.adapter = commentListAdapter
@@ -129,13 +135,13 @@ class DetailActivity : AppCompatActivity() {
 //                    val likesSize = picValue?.Likes?.size
                     binding.listitemTextviewLikenum.text = likesNum.toString()
                     binding.listitemImageviewMenu.setOnClickListener {
-                        showDialog(picValue?.pictureKey, picValue?.uid == UserObject.userModel.uid)
+                        showDialog(picValue.pictureKey, picValue.uid == UserObject.userModel?.uid)
                     }
 
                     var isLiked = false
-                    if (picValue?.Likes != null) {
-                        for (i in picValue?.Likes!!) {
-                            if (i.key == UserObject.userModel.uid) {
+                    if (picValue.Likes != null) {
+                        for (i in picValue.Likes!!) {
+                            if (i.key == UserObject.userModel?.uid) {
                                 isLiked = true
                                 binding.listitemImageviewHeart.setImageDrawable(
                                     applicationContext.resources.getDrawable(
@@ -165,7 +171,7 @@ class DetailActivity : AppCompatActivity() {
                                     )
                                 )
 
-                                FirebaseDatabase.getInstance().reference.child("pictures").child(picValue?.pictureKey!!).child("Likes").child(UserObject.userModel.uid!!)
+                                FirebaseDatabase.getInstance().reference.child("pictures").child(picValue?.pictureKey!!).child("Likes").child(UserObject.userModel?.uid!!)
                                     .removeValue()
                                     .addOnSuccessListener {
                                     }
@@ -192,27 +198,26 @@ class DetailActivity : AppCompatActivity() {
                                 binding.listitemAnimationLike.addAnimatorListener(object : Animator.AnimatorListener {
 
                                     override fun onAnimationStart(p0: Animator) {
-                                        TODO("Not yet implemented")
+
                                     }
 
                                     override fun onAnimationEnd(p0: Animator) {
-                                        TODO("Not yet implemented")
+                                        binding.listitemAnimationLike.visibility = View.GONE
                                     }
 
                                     override fun onAnimationCancel(p0: Animator) {
-                                        TODO("Not yet implemented")
+
                                     }
 
                                     override fun onAnimationRepeat(p0: Animator) {
-                                        TODO("Not yet implemented")
+
                                     }
                                 })
+
                                 FirebaseDatabase.getInstance().reference.child("pictures")
                                     .child(picValue?.pictureKey!!)
                                     .child("Likes")
-                                    .child(UserObject.userModel.uid!!).setValue(true)
-                                    .addOnSuccessListener {
-                                    }
+                                    .child(UserObject.userModel?.uid!!).setValue(true)
                             }
                         }
                     })
@@ -221,8 +226,8 @@ class DetailActivity : AppCompatActivity() {
                     binding.detailactivityCommentButton.setOnClickListener {
                         if (binding.detailactivityCommentEdittext.text != null) {
                             val pictureComment = PictureModel.Comments()
-                            pictureComment.uid = UserObject.userModel.uid
-                            pictureComment.username = UserObject.userModel.username
+                            pictureComment.uid = UserObject.userModel?.uid
+                            pictureComment.username = UserObject.userModel?.username
                             pictureComment.value = binding.detailactivityCommentEdittext.text.toString()
                             pictureComment.timestamp = ServerValue.TIMESTAMP
 
@@ -259,7 +264,7 @@ class DetailActivity : AppCompatActivity() {
                 if (isMe) {
                     FirebaseDatabase.getInstance().reference.child("pictures").child(key).removeValue()
                         .addOnSuccessListener {
-                            FirebaseDatabase.getInstance().reference.child("users").child(UserObject.userModel.uid!!).child("Pictures").child(key).removeValue()
+                            FirebaseDatabase.getInstance().reference.child("users").child(UserObject.userModel?.uid!!).child("Pictures").child(key).removeValue()
                                 .addOnSuccessListener {
                                     Toast.makeText(
                                         applicationContext,
@@ -285,7 +290,7 @@ class DetailActivity : AppCompatActivity() {
                         }
                 } else {
                     FirebaseDatabase.getInstance().reference.child("report").child("notice").child(key)
-                        .child(UserObject.userModel.uid!!)
+                        .child(UserObject.userModel?.uid!!)
                         .setValue(true)
                         .addOnSuccessListener{
                             Toast.makeText(
@@ -313,7 +318,7 @@ class DetailActivity : AppCompatActivity() {
                     FirebaseDatabase.getInstance().reference.child("pictures").child(uid!!)
                         .child("comment").child(key).removeValue()
                         .addOnSuccessListener {
-                            FirebaseDatabase.getInstance().reference.child("users").child(UserObject.userModel.uid!!)
+                            FirebaseDatabase.getInstance().reference.child("users").child(UserObject.userModel?.uid!!)
                                 .child("Pictures").child(key).removeValue()
                                 .addOnSuccessListener {
                                     Toast.makeText(
@@ -340,7 +345,7 @@ class DetailActivity : AppCompatActivity() {
                         }
                 } else {
                     FirebaseDatabase.getInstance().reference.child("report").child("comment").child(key)
-                        .child(UserObject.userModel.uid!!)
+                        .child(UserObject.userModel?.uid!!)
                         .setValue(true)
                         .addOnSuccessListener{
                             Toast.makeText(

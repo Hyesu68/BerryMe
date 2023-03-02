@@ -1,37 +1,30 @@
 package com.susuryo.berryme.fragment
 
-import android.Manifest
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.FileProvider
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import com.susuryo.berryme.*
 import com.susuryo.berryme.R
-import com.susuryo.berryme.databinding.ActivityMainBinding
 import com.susuryo.berryme.databinding.FragmentCameraBinding
 import com.susuryo.berryme.model.PictureModel
 import com.susuryo.berryme.model.UserModel
-//import kotlinx.android.synthetic.main.fragment_camera.*
-import java.io.File
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,244 +32,129 @@ class CameraFragment : Fragment() {
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = _binding!!
 
-//    lateinit var picture : ImageView
-//    lateinit var text : TextView
-//    lateinit var button : Button
-//    lateinit var locationImage: ImageView
-    private var imageUri: Uri? = null
-    var dialog: Dialog? = null
-//    lateinit var locationButton : RelativeLayout
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-//        val view : View = inflater.inflate(R.layout.fragment_camera, container, false)
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
-//        picture = view.findViewById(R.id.camerafragment_imageview_picture)
-//        text = view.findViewById(R.id.camerafragment_edittext_text)
-//        button = view.findViewById(R.id.camerafragment_button_register)
-        /*locationImage = view.findViewById(R.id.camerafragment_location_imageview)
-        locationImage.setOnClickListener {
-            val intent = Intent(requireContext(), LocationActivity::class.java)
-            requireContext().startActivity(intent)
-        }*/
-
-//        locationButton = view.findViewById(R.id.camerafragment_location_relativelayout)
        binding.camerafragmentLocationRelativelayout.setOnClickListener {
-            val intent = Intent(requireContext(), LocationActivity::class.java)
-            requireContext().startActivity(intent)
+//            val intent = Intent(requireContext(), LocationActivity::class.java)
+//            requireContext().startActivity(intent)
         }
 
-        binding.camerafragmentImageviewPicture.setOnClickListener(View.OnClickListener {
-            dialog = Dialog(requireContext())
-            dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog?.setContentView(R.layout.dialog_camera)
-
-            val gallery = dialog?.findViewById<TextView>(R.id.cameradialog_gallery_textview)
-            gallery?.setOnClickListener {
-                val intent = Intent(Intent.ACTION_PICK)
-                intent.type = MediaStore.Images.Media.CONTENT_TYPE
-                startActivityForResult(intent, PICK_FROM_ALBUM)
-            }
-
-            val camera = dialog?.findViewById<TextView>(R.id.cameradialog_camera_textview)
-            camera?.setOnClickListener {
-                dispatchTakePictureIntent()
-            }
-
-            dialog?.show()
-
-        })
-
-        binding.camerafragmentButtonRegister.setOnClickListener {
-            if (imageUri != null && binding.camerafragmentEdittextText.text.toString().isNotEmpty()) {
-                binding.camerafragmentButtonRegister.isClickable = false
-                binding.camerafragmentProgressbar.visibility = View.VISIBLE
-
-                val uid = UserObject.userModel.uid!!
-                FirebaseDatabase.getInstance().reference.child("users").child(uid)
-                    .addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val userModel: UserModel? = snapshot.getValue(UserModel::class.java)
-                            var profileUrl = userModel?.profileImageUrl
-                            var username = userModel?.username
-
-                            val dt = Date()
-                            val date = SimpleDateFormat("yyyyMMddHHmmss")
-                            val format = date.format(dt).toLong()
-                            val time = 100000000000000 - format
-                            val picName = time.toString() + UUID.randomUUID().toString()
-                            FirebaseStorage.getInstance()
-                                .reference.child("pictureImages").child(picName).putFile(imageUri!!)
-                                .addOnCompleteListener { task ->
-                                    val result = task.result.storage.downloadUrl
-//                                    val name = task.result.storage.name
-                                    result.addOnSuccessListener { uri ->
-                                        val imageUri = uri.toString()
-                                        val pictureModel = PictureModel()
-                                        pictureModel.uid = uid
-//                                        pictureModel.username = username
-                                        pictureModel.value = binding.camerafragmentEdittextText.text.toString()
-                                        pictureModel.pictureImageUrl = imageUri
-//                                        pictureModel.profileImageUrl = profileUrl
-                                        pictureModel.timestamp = ServerValue.TIMESTAMP
-
-                                        FirebaseDatabase.getInstance().reference.child("pictures")
-                                            .child(picName)
-                                            .setValue(pictureModel)
-                                            .addOnSuccessListener {
-                                                val pictures = UserModel.Picture()
-                                                pictures.picUrl = imageUri
-                                                pictures.picUid = picName
-                                                FirebaseDatabase.getInstance().reference.child("users")
-                                                    .child(uid).child("Pictures").child(picName)
-                                                    .setValue(pictures)
-                                                    .addOnSuccessListener {
-                                                        binding.camerafragmentProgressbar.visibility =
-                                                            View.GONE
-                                                        var mainActivity = activity as MainActivity
-//                                                        mainActivity.setFragment(R.id.action_list)
-                                                        mainActivity.binding.mainactivityBottomnavigationview.selectedItemId =
-                                                            R.id.action_list
-                                                    }
-                                            }
-
-                                    }
-                                }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            binding.camerafragmentProgressbar.visibility = View.GONE
-
-                            binding.camerafragmentButtonRegister.isClickable = true
-                            Toast.makeText(context, error.toString() + "", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    })
-
-            } else {
-                Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show()
-            }
-        }
+        binding.camerafragmentImageviewPicture.setOnClickListener { choosePictureDialog() }
+        binding.shareButton.setOnClickListener { shareEvent() }
 
         return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun shareEvent() {
+        val caption = binding.captionInput.editText?.text.toString()
+        if (caption.isEmpty()) binding.captionInput.error = resources.getString(R.string.caption_not_empty)
+        if (profileUri == null) Toast.makeText(requireContext(), resources.getString(R.string.profile_not_empty), Toast.LENGTH_SHORT).show()
+
+        if (caption.isNotEmpty() && profileUri != null) { share(caption) }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (dialog?.isShowing == true) dialog?.dismiss()
-        if (resultCode == AppCompatActivity.RESULT_OK) {
-            if (requestCode == PICK_FROM_ALBUM) {
-//                camerafragment_imageview_picture.setImageURI(data!!.data) // 가운데 뷰를 바꿈
-                imageUri = data?.data //이미지 경로 원본
-//                picture.visibility = View.GONE
-//                camerafragment_imageview_userpic.visibility = View.VISIBLE
+    private fun share(caption: String) {
+        val uid = UserObject.userModel?.uid!!
 
-//                picture.setImageURI(imageUri)
+        val dt = Date()
+        val date = SimpleDateFormat("yyyyMMddHHmmss")
+        val format = date.format(dt).toLong()
+        val time = 100000000000000 - format
+        val picName = time.toString() + UUID.randomUUID().toString()
+        Firebase.storage.getReference("pictureImages").child(picName).putFile(profileUri!!)
+            .addOnCompleteListener { task ->
+                val result = task.result.storage.downloadUrl
+                result.addOnSuccessListener { uri ->
+                    val imageUri = uri.toString()
+                    val pictureModel = PictureModel()
+                    pictureModel.uid = uid
+                    pictureModel.value = caption
+                    pictureModel.pictureImageUrl = imageUri
+                    pictureModel.timestamp = ServerValue.TIMESTAMP
 
-                val circularProgressDrawable = CircularProgressDrawable(requireContext())
-                circularProgressDrawable.strokeWidth = 5f
-                circularProgressDrawable.centerRadius = 30f
-                circularProgressDrawable.start()
-                Glide.with(requireContext())
-                    .load(imageUri)
-                    .apply(RequestOptions().fitCenter())
-                    .placeholder(circularProgressDrawable)
-                    .into(binding.camerafragmentImageviewPicture)
-            } else if (requestCode == REQUEST_TAKE_PHOTO) {
-                galleryAddPic()
-            }
-        } else {
-            Toast.makeText(requireContext(), "Try Again", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun galleryAddPic() {
-        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
-            val f = File(currentPhotoPath)
-            mediaScanIntent.data = Uri.fromFile(f)
-            imageUri = Uri.fromFile(f)
-            requireContext().sendBroadcast(mediaScanIntent)
-        }
-
-//        BitmapFactory.decodeFile(currentPhotoPath)?.also { bitmap ->
-//            picture.setImageBitmap(bitmap)
-//        }
-
-        val circularProgressDrawable = CircularProgressDrawable(requireContext())
-        circularProgressDrawable.strokeWidth = 5f
-        circularProgressDrawable.centerRadius = 30f
-        circularProgressDrawable.start()
-        Glide.with(requireContext())
-            .load(imageUri)
-            .apply(RequestOptions().fitCenter())
-            .placeholder(circularProgressDrawable)
-            .into(binding.camerafragmentImageviewPicture)
-    }
-
-    companion object {
-        private const val PICK_FROM_ALBUM = 15
-        private const val REQUEST_TAKE_PHOTO = 1
-    }
-
-    lateinit var currentPhotoPath: String
-
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
-        // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
-        }
-    }
-
-    private fun dispatchTakePictureIntent() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (ex: IOException) {
-                    null
-                }
-
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        requireContext(),
-                        "com.susuryo.berryme.fileprovider",
-                        it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-
-//                    val intent = Intent(Intent.ACTION_DIAL)
-//                    intent.data = Uri.parse("tel:" + "phone_number")
-
-                    if (Build.VERSION.SDK_INT > 23) {
-                        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
-                    } else {
-                        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                            Toast.makeText(requireContext(), "Permission Not Granted ", Toast.LENGTH_SHORT).show()
-                        } else {
-                            val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.CAMERA)
-                            ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS_STORAGE,9)
-                            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
-
+                    FirebaseDatabase.getInstance().reference.child("pictures")
+                        .child(picName)
+                        .setValue(pictureModel)
+                        .addOnSuccessListener {
+                            val pictures = UserModel.Picture()
+                            pictures.picUrl = imageUri
+                            pictures.picUid = picName
+                            FirebaseDatabase.getInstance().reference.child("users")
+                                .child(uid).child("Pictures").child(picName)
+                                .setValue(pictures)
+                                .addOnSuccessListener {
+                                    binding.camerafragmentProgressbar.visibility =
+                                        View.GONE
+                                    val mainActivity = activity as MainActivity
+                                    mainActivity.binding.mainactivityBottomnavigationview.selectedItemId =
+                                        R.id.action_list
+                                }
                         }
+
+                }
+            }
+
+    }
+
+    private fun choosePictureDialog() {
+        val items = arrayOf(resources.getString(R.string.gallery), resources.getString(R.string.camera))
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.choose))
+            .setItems(items) { dialog, which ->
+                // Do something for item chosen
+                when (which) {
+                    0 -> {
+                        bringPictureFromGallery()
+                    }
+                    1 -> {
+                        openSomeActivityForResult()
                     }
                 }
             }
+            .setNegativeButton("cancel") { dialog, which ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun bringPictureFromGallery() {
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    private var profileUri: Uri? = null
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            Log.d("PhotoPicker", "Selected URI: $uri")
+            profileUri = uri
+            Glide.with(requireContext())
+                .load(profileUri)
+                .apply(RequestOptions().fitCenter())
+                .centerCrop()
+                .into(binding.camerafragmentImageviewPicture)
+        } else {
+            Log.d("PhotoPicker", "No media selected")
         }
     }
+
+    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // There are no request codes
+            val data: Intent? = result.data
+            profileUri = data?.data
+            Glide.with(requireContext())
+                .load(profileUri)
+                .apply(RequestOptions().fitCenter())
+                .centerCrop()
+                .into(binding.camerafragmentImageviewPicture)
+        }
+    }
+
+    private fun openSomeActivityForResult() {
+        val intent = Intent(requireContext(), CameraActivity::class.java)
+        resultLauncher.launch(intent)
+    }
+
 }

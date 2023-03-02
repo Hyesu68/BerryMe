@@ -52,14 +52,14 @@ class ChangeProfileActivity : AppCompatActivity() {
         circularProgressDrawable.centerRadius = 30f
         circularProgressDrawable.start()
         Glide.with(applicationContext)
-            .load(UserObject.userModel.profileImageUrl)
+            .load(UserObject.userModel?.profileImageUrl)
             .apply(RequestOptions().centerCrop())
             .placeholder(circularProgressDrawable)
             .into(binding.changeprofileactivityImageviewProfile)
 
-        binding.changeprofileactivityEdittextEmail.text = UserObject.userModel.email
-        binding.changeprofileactivityEdittextName.setText(UserObject.userModel.username)
-        binding.changeprofileactivityEdittextInfo.setText(UserObject.userModel.info)
+        binding.changeprofileactivityEdittextEmail.text = UserObject.userModel?.email
+        binding.changeprofileactivityEdittextName.setText(UserObject.userModel?.username)
+        binding.changeprofileactivityEdittextInfo.setText(UserObject.userModel?.info)
 
 //        changeprofileactivity_imageview_profile.setOnClickListener {
 //            val intent = Intent(Intent.ACTION_PICK)
@@ -68,7 +68,7 @@ class ChangeProfileActivity : AppCompatActivity() {
 //        }
 
         var Pictures = HashMap<String, UserModel.Picture>()
-        FirebaseDatabase.getInstance().reference.child("users").child(UserObject.userModel.uid!!).child("Pictures")
+        FirebaseDatabase.getInstance().reference.child("users").child(UserObject.userModel?.uid!!).child("Pictures")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     Pictures?.clear()
@@ -78,12 +78,12 @@ class ChangeProfileActivity : AppCompatActivity() {
                     }
 
                    binding.changeprofileactivityButtonSignup.setOnClickListener {
-                        var isNameChanged = (binding.changeprofileactivityEdittextName.text.toString() != UserObject.userModel.username.toString())
-                        var isInfoChanged = (binding.changeprofileactivityEdittextInfo.text.toString() != UserObject.userModel.info)
+                        var isNameChanged = (binding.changeprofileactivityEdittextName.text.toString() != UserObject.userModel?.username.toString())
+                        var isInfoChanged = (binding.changeprofileactivityEdittextInfo.text.toString() != UserObject.userModel?.info)
 
                         if (isNameChanged) {
                             FirebaseDatabase.getInstance().reference.child("users")
-                                .child(UserObject.userModel.uid!!).child("username")
+                                .child(UserObject.userModel?.uid!!).child("username")
                                 .setValue(binding.changeprofileactivityEdittextName.text.toString())
                                 .addOnSuccessListener {
                                     isNameChanged = false
@@ -99,7 +99,7 @@ class ChangeProfileActivity : AppCompatActivity() {
 
                         if (isInfoChanged) {
                             FirebaseDatabase.getInstance().reference.child("users")
-                                .child(UserObject.userModel.uid!!).child("info")
+                                .child(UserObject.userModel?.uid!!).child("info")
                                 .setValue(binding.changeprofileactivityEdittextInfo.text.toString())
                                 .addOnSuccessListener {
                                     isInfoChanged = false
@@ -115,14 +115,14 @@ class ChangeProfileActivity : AppCompatActivity() {
 
                         if (isImageChanged) {
                             FirebaseStorage.getInstance()
-                                .reference.child("userImages").child(UserObject.userModel.uid!!)
+                                .reference.child("userImages").child(UserObject.userModel?.uid!!)
                                 .putFile(imageUri!!)
                                 .addOnCompleteListener { task -> //
                                     val result = task.result.storage.downloadUrl
                                     result.addOnSuccessListener { uri ->
                                         val imageUri = uri.toString()
                                         FirebaseDatabase.getInstance().reference.child("users")
-                                            .child(UserObject.userModel.uid!!).child("profileImageUrl")
+                                            .child(UserObject.userModel?.uid!!).child("profileImageUrl")
                                             .setValue(imageUri)
                                             .addOnSuccessListener {
                                                 isImageChanged = false

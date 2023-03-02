@@ -7,4 +7,8 @@
     <color name="colorPrimaryPoint">#009688</color>
     <color name="colorPrimaryRipple">#42009688</color>
     <color name="shrine_pink_900">#880E4F</color>
+    <color name="white">#FFFFFF</color>
+    <color name="quantum_white_100">#FFFFFF</color>
+    <color name="quantum_grey">#C5CAE9</color>
+    <color name="quantum_black_text">#000000</color>
 </resources>

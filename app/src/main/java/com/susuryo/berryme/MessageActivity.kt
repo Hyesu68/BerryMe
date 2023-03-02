@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.susuryo.berryme.databinding.ActivityMessageBinding
 import com.susuryo.berryme.model.ChatModel
 import com.susuryo.berryme.model.UserModel
@@ -22,11 +24,8 @@ import java.util.*
 class MessageActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMessageBinding
     private var destinationUid: String? = null
-//    private var button: Button? = null
-//    private var editText: EditText? = null
     private var uid: String? = null
     private var chatRoomUid: String? = null
-//    private var recyclerView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +33,8 @@ class MessageActivity : AppCompatActivity() {
         setContentView(binding.root)
         uid = FirebaseAuth.getInstance().currentUser!!.uid //채팅 요구하는 아이디
         destinationUid = intent.getStringExtra("destinationUid")
-//        button = findViewById(R.id.messageactivity_button)
-//        editText = findViewById(R.id.messageactivity_edittext)
-//        recyclerView = findViewById(R.id.messageactivity_recyclerview)
+
         binding.messageactivityButton.setOnClickListener {
-    //            val chatModel = ChatModel()
-    //            val chatUser = chatModel.users.toMutableMap()
-    //            chatUser[uid!!] = true
-    //            chatUser[destinationUid!!] = true
             val chat = mutableMapOf<String, Boolean>()
             chat[uid!!] = true
             chat[destinationUid!!] = true
@@ -71,8 +64,9 @@ class MessageActivity : AppCompatActivity() {
     }
 
     fun checkChatRoom() {
-        FirebaseDatabase.getInstance().reference.child("chatrooms").orderByChild("users/$uid")
-            .equalTo(true).addListenerForSingleValueEvent(object : ValueEventListener {
+        Firebase.database.getReference("chatrooms").orderByChild("users/$uid").equalTo(true)
+//        FirebaseDatabase.getInstance().reference.child("chatrooms").orderByChild("users/$uid").equalTo(true)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (item in dataSnapshot.children) {
                         val chatModel: ChatModel? = item.getValue(ChatModel::class.java)
