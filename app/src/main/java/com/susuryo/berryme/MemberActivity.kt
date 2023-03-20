@@ -49,17 +49,16 @@ class MemberActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.fromright, R.anim.none)
 
         destinationUid = intent.getStringExtra("Uid")
-        binding.top.visibility = View.VISIBLE
+        binding.titleBar.visibility = View.VISIBLE
 
-        binding.messageButton.visibility = View.VISIBLE
-        binding.profileButton.visibility = View.GONE
-        binding.messageButton.setOnClickListener {
+        binding.profileButton.text = resources.getString(R.string.send_messages)
+        binding.profileButton.setOnClickListener {
             val intent = Intent(applicationContext, MessageActivity::class.java)
             intent.putExtra("destinationUid", destinationUid)
             startActivity(intent)
         }
 
-        binding.backButton.setOnClickListener {
+        binding.toolBar.setNavigationOnClickListener {
             onBackPressed()
         }
 
@@ -83,7 +82,7 @@ class MemberActivity : AppCompatActivity() {
             })
 
         val pictures: MutableList<UserModel.Picture?> = ArrayList<UserModel.Picture?>()
-        FirebaseDatabase.getInstance().reference.child("users").child(destinationUid!!).child("Pictures")
+        FirebaseDatabase.getInstance().reference.child("users").child(destinationUid!!).child("pictures")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     pictures.clear()
@@ -113,7 +112,7 @@ class MemberActivity : AppCompatActivity() {
         init { getPictures() }
 
         fun getPictures() {
-            Firebase.database.getReference("users").child(dUid!!).child("Pictures")
+            Firebase.database.getReference("users").child(dUid!!).child("pictures")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         picture.clear()

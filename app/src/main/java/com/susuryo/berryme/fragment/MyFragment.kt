@@ -75,7 +75,7 @@ class MyFragment : Fragment() {
         init { getPictures() }
 
         fun getPictures() {
-            Firebase.database.getReference("users").child(UserObject.userModel?.uid!!).child("Pictures")
+            Firebase.database.getReference("users").child(UserObject.userModel?.uid!!).child("pictures")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         picture.clear()

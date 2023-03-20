@@ -43,7 +43,7 @@ class SignupActivity : AppCompatActivity() {
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.signupActivityImageviewProfile.setOnClickListener(View.OnClickListener {
+        binding.cameraImageView.setOnClickListener(View.OnClickListener {
             choosePictureDialog()
         })
 
@@ -92,7 +92,7 @@ class SignupActivity : AppCompatActivity() {
             profileUri = uri
             Glide.with(applicationContext)
                 .load(profileUri)
-                .apply(RequestOptions().fitCenter())
+                .apply(RequestOptions().circleCrop())
                 .into(binding.signupActivityImageviewProfile)
         } else {
             Log.d("PhotoPicker", "No media selected")
@@ -106,7 +106,7 @@ class SignupActivity : AppCompatActivity() {
             profileUri = data?.data
             Glide.with(applicationContext)
                 .load(profileUri)
-                .apply(RequestOptions().fitCenter())
+                .apply(RequestOptions().circleCrop())
                 .into(binding.signupActivityImageviewProfile)
         }
     }

@@ -20,7 +20,7 @@
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="Sign Up"
+            app:title="@string/signup"
             app:titleTextColor="@color/quantum_white_100"
             app:titleCentered="true"
             android:background="@color/red900"
@@ -40,27 +40,33 @@
             android:layout_height="match_parent"
             tools:context=".SignupActivity"
             android:background="@android:color/white">
-                <FrameLayout
-                    android:id="@+id/imageFrameLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/imageLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed">
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/signupActivity_imageview_profile"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/profile_icon"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/emailTextInput">
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/add_photo_icon"
-                        android:layout_gravity="center"/>
-                    <ImageView
-                        android:id="@+id/signupActivity_imageview_profile"
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/square_back"/>
-                </FrameLayout>
+                    app:layout_constraintVertical_chainStyle="packed"/>
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/cameraImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    app:srcCompat="@drawable/photo_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/emailTextInput"
@@ -73,7 +79,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageFrameLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/imageLayout"
                     app:layout_constraintBottom_toTopOf="@+id/nameTextInput">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/signupActivity_edittext_email"

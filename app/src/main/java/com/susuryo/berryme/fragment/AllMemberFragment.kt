@@ -51,7 +51,7 @@ class AllMemberFragment: Fragment() {
                         for (item in snapshot.children) {
                             item.getValue(PictureModel::class.java)?.let { picture.add(it) }
                         }
-                        picture.reverse()
+//                        picture.reverse()
 
                         notifyDataSetChanged()
                     }

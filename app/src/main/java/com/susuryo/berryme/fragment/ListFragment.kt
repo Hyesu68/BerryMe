@@ -300,7 +300,7 @@ class ListFragment : Fragment() {
                             .removeValue()
                             .addOnSuccessListener {
                                 Firebase.database.getReference("users")
-                                    .child(UserObject.userModel?.uid!!).child("Pictures").child(key)
+                                    .child(UserObject.userModel?.uid!!).child("pictures").child(key)
                                     .removeValue()
                             }
                     } else {

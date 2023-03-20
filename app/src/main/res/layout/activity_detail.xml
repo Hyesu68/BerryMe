@@ -1,35 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <RelativeLayout
-        android:id="@+id/detailactivity_title_relativelayout"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:elevation="15dp"
-        android:background="#e6000e"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
-        <ImageView
-            android:id="@+id/back_button"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/back_icon"
-            android:layout_alignParentLeft="true"
-            android:paddingLeft="10dp"/>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/post"
+            app:titleTextColor="@color/white"
+            app:titleCentered="true"
+            android:background="@color/red900"
+            app:navigationIcon="@drawable/ic_arrow_white_24px"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:layout_centerInParent="true"
-            android:src="@drawable/berryme_berry_white"/>
-    </RelativeLayout>
     <RelativeLayout
-        android:id="@+id/detailactivity_user_relativelayout"
+        android:id="@+id/userRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -37,7 +30,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="5dp"
-        android:layout_below="@+id/detailactivity_title_relativelayout">
+        android:layout_below="@+id/titleBar">
         <ImageView
             android:id="@+id/listitem_imageview_profile"
             android:layout_width="50dp"
@@ -78,10 +71,10 @@
     </RelativeLayout>
 
     <FrameLayout
-        android:id="@+id/detailactivity_picture_framelayout"
+        android:id="@+id/pictureFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/detailactivity_user_relativelayout">
+        android:layout_below="@+id/userRelativeLayout">
         <ImageView
             android:id="@+id/listitem_imageview_picture"
             android:layout_width="match_parent"
@@ -101,12 +94,12 @@
     </FrameLayout>
 
     <RelativeLayout
-        android:id="@+id/detailactivity_heart_relativelayout"
+        android:id="@+id/heartRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="5dp"
-        android:layout_below="@+id/detailactivity_picture_framelayout">
+        android:layout_below="@+id/pictureFrameLayout">
         <TextView
             android:id="@+id/listitem_textview_valuename"
             android:layout_width="wrap_content"
@@ -140,26 +133,26 @@
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/detailactivity_comment_listview"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/detailactivity_heart_relativelayout"
-        android:layout_above="@+id/detailactivity_comment_linearlayout"/>
+        android:layout_below="@+id/heartRelativeLayout"
+        android:layout_above="@+id/commentLinearLayout"/>
 
     <LinearLayout
-        android:id="@+id/detailactivity_comment_linearlayout"
+        android:id="@+id/commentLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:layout_alignParentBottom="true">
         <EditText
             android:id="@+id/detailactivity_comment_edittext"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:hint="내용"
+            android:hint="@string/comment"
             android:layout_margin="10dp"
             android:padding="5dp"
             android:background="@drawable/round"
@@ -170,7 +163,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="5"
-            android:text="게시"
+            android:text="@string/send"
             android:layout_gravity="center"/>
     </LinearLayout>
 </RelativeLayout>

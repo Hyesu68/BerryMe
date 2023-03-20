@@ -83,7 +83,7 @@ class CameraFragment : Fragment() {
                             pictures.picUrl = imageUri
                             pictures.picUid = picName
                             FirebaseDatabase.getInstance().reference.child("users")
-                                .child(uid).child("Pictures").child(picName)
+                                .child(uid).child("pictures").child(picName)
                                 .setValue(pictures)
                                 .addOnSuccessListener {
                                     binding.camerafragmentProgressbar.visibility =
@@ -132,7 +132,6 @@ class CameraFragment : Fragment() {
             Glide.with(requireContext())
                 .load(profileUri)
                 .apply(RequestOptions().fitCenter())
-                .centerCrop()
                 .into(binding.camerafragmentImageviewPicture)
         } else {
             Log.d("PhotoPicker", "No media selected")
@@ -147,7 +146,6 @@ class CameraFragment : Fragment() {
             Glide.with(requireContext())
                 .load(profileUri)
                 .apply(RequestOptions().fitCenter())
-                .centerCrop()
                 .into(binding.camerafragmentImageviewPicture)
         }
     }

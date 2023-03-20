@@ -29,6 +29,7 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityCameraBinding
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
+    var cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +46,15 @@ class CameraActivity : AppCompatActivity() {
 
         // Set up the listeners for take photo and video capture buttons
         viewBinding.cameraImageView.setOnClickListener { takePhoto() }
+
+        viewBinding.changeButton.setOnClickListener {
+            if (cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA) {
+                cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            } else {
+                cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
+            }
+            startCamera()
+        }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
@@ -111,8 +121,6 @@ class CameraActivity : AppCompatActivity() {
             imageCapture = ImageCapture.Builder()
                 .build()
 
-            // Select back camera as a default
-            val cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
 
             try {
                 // Unbind use cases before rebinding

@@ -7,9 +7,6 @@ import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
 import com.susuryo.berryme.databinding.ActivitySettingBinding
 
-//import kotlinx.android.synthetic.main.activity_setting.*
-//import kotlinx.android.synthetic.main.activity_setting.back_button
-
 class SettingActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySettingBinding
     override fun onCreate(savedInstanceState: Bundle?) {

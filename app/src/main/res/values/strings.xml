@@ -68,4 +68,9 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="logout">Log Out</string>
     <string name="report">Report</string>
+    <string name="change_succeed">Change Succeed</string>
+    <string name="cannot_change_email">You cannot change email address</string>
+    <string name="comment">Comment</string>
+    <string name="post">Post</string>
+    <string name="member">Member</string>
 </resources>

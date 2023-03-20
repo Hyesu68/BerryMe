@@ -9,12 +9,8 @@ class PictureModel {
     var value : String? = null
     var pictureKey: String? = null
     var Likes: HashMap<String, Boolean>? = null
-    var comment: HashMap<String, Comments>? = null
+    var comment = HashMap<String, Comments>()
     var likesNum: Int? = null
-
-//    class Likes {
-//        var likes: Boolean? = false
-//    }
 
     class Comments {
         var uid: String? = null

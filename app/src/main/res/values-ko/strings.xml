@@ -68,4 +68,9 @@
     <string name="edit_profile">프로필 변경</string>
     <string name="logout">로그아웃</string>
     <string name="report">신고하기</string>
+    <string name="change_succeed">변경되었습니다</string>
+    <string name="cannot_change_email">이메일은 변경하실 수 없습니다</string>
+    <string name="comment">댓글</string>
+    <string name="post">게시물</string>
+    <string name="member">회원 정보</string>
 </resources>
