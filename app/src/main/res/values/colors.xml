@@ -11,4 +11,6 @@
     <color name="quantum_white_100">#FFFFFF</color>
     <color name="quantum_grey">#C5CAE9</color>
     <color name="quantum_black_text">#000000</color>
+    <color name="berrymeGradiant1">#FC5C7D</color>
+    <color name="berrymeGradiant2">#6A82FB</color>
 </resources>

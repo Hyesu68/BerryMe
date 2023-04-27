@@ -4,7 +4,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/grey800</item>
         <item name="colorPrimaryDark">@color/colorBlack</item>
-        <item name="colorSecondary">@color/red900</item>
+        <item name="colorSecondary">@color/berrymeGradiant1</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
     </style>
     <style name="BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">

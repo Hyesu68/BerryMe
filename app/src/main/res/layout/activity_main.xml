@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             app:title="BerryMe"
             app:titleTextColor="@color/quantum_white_100"
-            android:background="@color/red900"
+            android:background="@drawable/berryme_gradiant"
             app:menu="@menu/main_menu"/>
     </com.google.android.material.appbar.AppBarLayout>
 

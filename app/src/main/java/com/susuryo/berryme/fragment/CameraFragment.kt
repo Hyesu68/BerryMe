@@ -114,7 +114,7 @@ class CameraFragment : Fragment() {
                     }
                 }
             }
-            .setNegativeButton("cancel") { dialog, which ->
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
                 dialog.dismiss()
             }
             .show()

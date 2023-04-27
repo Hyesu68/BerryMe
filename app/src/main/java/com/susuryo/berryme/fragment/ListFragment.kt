@@ -6,6 +6,7 @@ import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -83,12 +85,15 @@ class ListFragment : Fragment() {
                 .into((holder as CustomViewHolder).pictureImageView)
 
             if (pictureModels[position]?.Likes?.containsKey(UserObject.userModel?.uid) == true) {
-                holder.heartImageView.setImageDrawable(
+                val drawable = context.resources.getDrawable(R.drawable.berry_full, context.theme)
+                drawable.setColorFilter(ContextCompat.getColor(context, R.color.berrymeGradiant1), PorterDuff.Mode.SRC_IN)
+                holder.heartImageView.setImageDrawable(drawable)
+                /*holder.heartImageView.setImageDrawable(
                     context.resources.getDrawable(
-                        R.drawable.icon_love_filled,
+                        R.drawable.berry_full,
                         context.theme
                     )
-                )
+                )*/
             }
 
             val doubleClick = DoubleClick(object : DoubleClickListener {
@@ -104,12 +109,15 @@ class ListFragment : Fragment() {
                         }
                         holder.likeNumTextView.text = likeNum.toString()
                         pictureModels[position]?.Likes?.remove(UserObject.userModel?.uid)
-                        holder.heartImageView.setImageDrawable(
+                        val drawable = context.resources.getDrawable(R.drawable.berry_empty, context.theme)
+                        drawable.setColorFilter(ContextCompat.getColor(context, R.color.berrymeGradiant1), PorterDuff.Mode.SRC_IN)
+                        holder.heartImageView.setImageDrawable(drawable)
+                        /*holder.heartImageView.setImageDrawable(
                             context.resources.getDrawable(
-                                R.drawable.icon_love_blank,
+                                R.drawable.berry_empty,
                                 context.theme
                             )
-                        )
+                        )*/
 
                         Firebase.database.getReference("pictures")
                             .child(pictureModels[position]?.pictureKey!!).child("Likes").child(UserObject.userModel?.uid!!)
@@ -121,12 +129,16 @@ class ListFragment : Fragment() {
                         }
                         holder.likeNumTextView.text = likeNum.toString()
                         pictureModels[position]?.Likes?.put(UserObject.userModel?.uid!!, true)
-                        holder.heartImageView.setImageDrawable(
+
+                        val drawable = context.resources.getDrawable(R.drawable.berry_full, context.theme)
+                        drawable.setColorFilter(ContextCompat.getColor(context, R.color.berrymeGradiant1), PorterDuff.Mode.SRC_IN)
+                        holder.heartImageView.setImageDrawable(drawable)
+                        /*holder.heartImageView.setImageDrawable(
                             context.resources.getDrawable(
-                                R.drawable.icon_love_filled,
+                                R.drawable.berry_full,
                                 context.theme
                             )
-                        )
+                        )*/
 
                         holder.likeAnimation.visibility = View.VISIBLE
                         holder.likeAnimation.playAnimation()

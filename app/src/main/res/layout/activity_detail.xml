@@ -17,7 +17,7 @@
             app:title="@string/post"
             app:titleTextColor="@color/white"
             app:titleCentered="true"
-            android:background="@color/red900"
+            android:background="@drawable/berryme_gradiant"
             app:navigationIcon="@drawable/ic_arrow_white_24px"/>
     </com.google.android.material.appbar.AppBarLayout>
 

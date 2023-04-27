@@ -69,7 +69,7 @@ class SignupActivity : AppCompatActivity() {
                     }
                 }
             }
-            .setNegativeButton("cancel") { dialog, which ->
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
                 dialog.dismiss()
             }
             .show()
@@ -118,19 +118,19 @@ class SignupActivity : AppCompatActivity() {
         val introduction = binding.infoTextInput.editText?.text.toString()
 
         if (email.isEmpty()) {
-            binding.emailTextInput.error = "Email must not be empty"
+            binding.emailTextInput.error = resources.getString(R.string.email_not_empty)
         }
         if (name.isEmpty()) {
-            binding.nameTextInput.error = "Name must not be empty"
+            binding.nameTextInput.error = resources.getString(R.string.name_not_empty)
         }
         if (password.isEmpty()) {
-            binding.passwordTextInput.error = "Password must not be empty"
+            binding.passwordTextInput.error = resources.getString(R.string.password_not_empty)
         }
         if (introduction.isEmpty()) {
-            binding.infoTextInput.error = "Introduction must not be empty"
+            binding.infoTextInput.error = resources.getString(R.string.introduction_not_empty)
         }
         if (profileUri == null) {
-            showErrorDialog("You must upload a profile picture")
+            showErrorDialog(resources.getString(R.string.profile_not_empty))
         }
 
         if (email.isNotEmpty() && name.isNotEmpty() && password.isNotEmpty() && introduction.isNotEmpty() && profileUri != null) {
@@ -171,9 +171,9 @@ class SignupActivity : AppCompatActivity() {
 
     private fun showErrorDialog(str : String) {
         AlertDialog.Builder(this)
-            .setTitle("Signup Failed")
+            .setTitle(resources.getString(R.string.signup_fail))
             .setMessage(str)
-            .setPositiveButton("OK") { dialog, which -> dialog.dismiss()}
+            .setPositiveButton(resources.getString(R.string.ok)) { dialog, which -> dialog.dismiss()}
             .show()
     }
 

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:elevation="15dp"
-        android:background="#e6000e"
+        android:background="@drawable/berryme_gradiant"
         android:layout_alignParentTop="true">
         <ImageView
             android:id="@+id/back_button"
