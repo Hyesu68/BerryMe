@@ -1,9 +1,10 @@
 # BerryMe - Android App
-<img src="https://user-images.githubusercontent.com/40760917/191668896-613b7d8c-5caf-4c34-bb0c-97c4c00faee9.png" align="left"
+<img src="https://user-images.githubusercontent.com/40760917/234767191-30782279-6e4e-40c0-84ec-f07fc6a75ce9.png" align="left"
 width="150" hspace="10" vspace="10">
  </br> 
-🍒BerryMe is a social media application developed using Firebase's Realtime Database, Storage and Authentication.  
-❣️Users can post their photos and posts and communicate with other users with comments and likes functions.
+🍓When you express yourself and let your true self shine through, you can reap the berries of your labor.</br> 
+🍒Just as berry can be used as a delicious topping for jams, juices, or cakes, your expressions can lead to a variety of positive outcomes. </br>
+❣️BerryMe serves as a representation of you, helping you discover and embrace your authentic self. 
 </br></br></br>
 
 ## Features  
@@ -12,18 +13,21 @@ The android application lets you :
 - Upload your pictures and share your daily life.
 - Leave a comment and press like to communicate with other users.
 
+
+## ScreenShots
+<img src="https://user-images.githubusercontent.com/40760917/234768321-e7881810-4631-4fe8-ab32-7cde67cd2f89.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/234768409-a74d086e-0bc4-4449-a1e9-5aa08ecded43.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/234768422-0161b7b3-7184-4bb2-897b-169b91f485c4.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/234768435-cc1bd899-4984-44d2-9189-7258175b45bd.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/234768447-dfbf6ce3-09a1-4d23-bebd-5b219327c9f2.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/234768460-a8c35326-13ce-4956-a918-73b5ddcd5565.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/234768472-bc662175-6ce5-462e-87dc-94dc9115cee8.jpg" align="left" width="200" hspace="10" vspace="10">
+<img src="https://user-images.githubusercontent.com/40760917/234768481-a04dece2-b5b3-4ce9-80be-930b440e8e7c.jpg" width="200" hspace="10" vspace="10">
+
+
 ## Demo Video
 [![IU(아이유) _ Into the I-LAND](http://img.youtube.com/vi/W7E_GbgUWYQ/0.jpg)](https://youtu.be/W7E_GbgUWYQ?t=0s)
 
-## ScreenShots
-<img src="https://user-images.githubusercontent.com/40760917/222328804-8372b22a-442a-4303-a3c1-b95766947f43.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/222328922-045f97ff-a856-423d-a36c-070f797fd5ba.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/222328960-4d5e8c25-76b0-45f8-9c1e-5b7d39dfe1db.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/222328990-2c717127-c5aa-4cd8-b2fe-30e55d001386.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/222329026-c6a6c3e1-0341-4d94-b674-bdfc2abd0992.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/222329160-4a9d610d-18d5-4cca-b7b4-92603b21744a.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/222329057-aafe9039-ba87-4519-b6d3-18ce47cc9e9b.jpg" align="left" width="200" hspace="10" vspace="10">
-<img src="https://user-images.githubusercontent.com/40760917/222329262-16670f3a-db73-49fd-9ac1-220cc0463350.jpg" width="200" hspace="10" vspace="10">
 
 ## Permissions
 BerryMe requires the following permissions:
