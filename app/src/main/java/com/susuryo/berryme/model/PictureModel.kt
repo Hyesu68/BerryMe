@@ -11,6 +11,7 @@ class PictureModel {
     var Likes: HashMap<String, Boolean>? = null
     var comment = HashMap<String, Comments>()
     var likesNum: Int? = null
+    var isPrivate: Boolean? = null
 
     class Comments {
         var uid: String? = null

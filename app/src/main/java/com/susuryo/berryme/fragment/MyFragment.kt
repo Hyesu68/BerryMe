@@ -9,13 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -32,7 +36,6 @@ import com.susuryo.berryme.model.UserModel
 class MyFragment : Fragment() {
     private lateinit var binding: ActivityMemberBinding
     lateinit var user: UserModel
-    private lateinit var adapter: MyPicAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,8 +54,19 @@ class MyFragment : Fragment() {
         binding.name.text = UserObject.userModel?.username
         binding.info.text = UserObject.userModel?.info
 
-        adapter = MyPicAdapter(requireActivity())
-        binding.gridView.adapter = adapter
+        binding.gridView.visibility = View.GONE
+        binding.tabLayout.visibility = View.VISIBLE
+        binding.viewPager.visibility = View.VISIBLE
+
+        val adapter = MyPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        binding.viewPager.adapter = adapter
+
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Public"
+                1 -> tab.text = "Private"
+            }
+        }.attach()
 
         return binding.root
     }
@@ -67,89 +81,18 @@ class MyFragment : Fragment() {
         startActivity(intent, activityOptions.toBundle())
     }
 
-    private class MyPicAdapter(_activity: Activity): RecyclerView.Adapter<MyPicAdapter.ViewHolder>() {
-        private val activity = _activity
-        private var picture = mutableListOf<UserModel.Picture>()
-        private class ViewHolder(val binding: GridItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class MyPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+        FragmentStateAdapter(fragmentManager, lifecycle) {
 
-        init { getPictures() }
+        private val tabFragmentsCreators: Map<Int, () -> Fragment> = mapOf(
+            0 to { MyPublicFragment() },
+            1 to { MyPrivateFragment() }
+        )
 
-        fun getPictures() {
-            Firebase.database.getReference("users").child(UserObject.userModel?.uid!!).child("pictures")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        picture.clear()
+        override fun getItemCount(): Int = tabFragmentsCreators.size
 
-                        for (item in snapshot.children) {
-                            item.getValue(UserModel.Picture::class.java)?.let { picture.add(it) }
-                        }
-                        picture.reverse()
-
-                        notifyDataSetChanged()
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }
-                })
+        override fun createFragment(position: Int): Fragment {
+            return tabFragmentsCreators[position]?.invoke() ?: throw IndexOutOfBoundsException()
         }
-
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-        ): ViewHolder {
-            val binding = GridItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return ViewHolder(binding)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            with(holder) {
-                with(picture[position]) {
-                    binding.progressBar.visibility = View.VISIBLE
-                    Glide.with(holder.itemView.context)
-                        .load(this.picUrl)
-                        .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                binding.progressBar.visibility = View.GONE
-                                return false
-                            }
-
-                            override fun onResourceReady(
-                                resource: Drawable?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                dataSource: DataSource?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                binding.progressBar.visibility = View.GONE
-                                return false
-                            }
-                        })
-                        .apply(RequestOptions().fitCenter())
-                        .centerCrop()
-                        .into(binding.gridImageView)
-
-                    binding.gridImageView.setOnClickListener {
-                        val intent = Intent(binding.root.context, DetailActivity::class.java)
-                        intent.putExtra("Uid", UserObject.userModel?.uid)
-                        intent.putExtra("picuid", this.picUid)
-                        val activityOptions = ActivityOptions.makeCustomAnimation(
-                            binding.root.context,
-                            R.anim.fromright,
-                            R.anim.toleft
-                        )
-                        activity.startActivity(intent, activityOptions.toBundle())
-                    }
-                }
-            }
-        }
-
-        override fun getItemCount() = picture.size
     }
-
 }

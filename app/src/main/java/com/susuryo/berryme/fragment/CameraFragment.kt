@@ -74,6 +74,7 @@ class CameraFragment : Fragment() {
                     pictureModel.value = caption
                     pictureModel.pictureImageUrl = imageUri
                     pictureModel.timestamp = ServerValue.TIMESTAMP
+                    pictureModel.isPrivate = binding.privateCheckBox.isChecked
 
                     FirebaseDatabase.getInstance().reference.child("pictures")
                         .child(picName)
@@ -82,6 +83,7 @@ class CameraFragment : Fragment() {
                             val pictures = UserModel.Picture()
                             pictures.picUrl = imageUri
                             pictures.picUid = picName
+                            pictures.isPrivate = binding.privateCheckBox.isChecked
                             FirebaseDatabase.getInstance().reference.child("users")
                                 .child(uid).child("pictures").child(picName)
                                 .setValue(pictures)

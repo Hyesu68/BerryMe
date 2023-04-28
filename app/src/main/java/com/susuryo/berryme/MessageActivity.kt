@@ -26,6 +26,7 @@ class MessageActivity : AppCompatActivity() {
     private var destinationUid: String? = null
     private var uid: String? = null
     private var chatRoomUid: String? = null
+    private var destination: UserModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +34,25 @@ class MessageActivity : AppCompatActivity() {
         setContentView(binding.root)
         uid = FirebaseAuth.getInstance().currentUser!!.uid //채팅 요구하는 아이디
         destinationUid = intent.getStringExtra("destinationUid")
+        Firebase.database.getReference("users").child(destinationUid!!)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    destination = snapshot.getValue(UserModel::class.java)!!
+                    if (destination != null) {
+                        binding.name.text = destination?.username
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
 
         binding.messageactivityButton.setOnClickListener {
             val chat = mutableMapOf<String, Boolean>()
             chat[uid!!] = true
             chat[destinationUid!!] = true
             if (chatRoomUid == null) {
-                binding.messageactivityButton.setEnabled(false)
+                binding.messageactivityButton.isEnabled = false
                 FirebaseDatabase.getInstance().reference.child("chatrooms").push()
                     .child("users")
                     .setValue(chat).addOnSuccessListener {

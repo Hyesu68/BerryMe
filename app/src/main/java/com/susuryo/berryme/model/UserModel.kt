@@ -11,5 +11,6 @@ class UserModel {
     class Picture {
         var picUid: String? = null
         var picUrl: String? = null
+        var isPrivate: Boolean? = null
     }
 }

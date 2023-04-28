@@ -49,7 +49,11 @@ class AllMemberFragment: Fragment() {
                         picture.clear()
 
                         for (item in snapshot.children) {
-                            item.getValue(PictureModel::class.java)?.let { picture.add(it) }
+                            item.getValue(PictureModel::class.java)?.let {
+                                if (it.isPrivate == null || it.isPrivate == false) {
+                                    picture.add(it)
+                                }
+                            }
                         }
 //                        picture.reverse()
 

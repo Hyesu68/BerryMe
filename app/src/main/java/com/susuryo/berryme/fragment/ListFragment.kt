@@ -269,8 +269,10 @@ class ListFragment : Fragment() {
                         pictureModels.clear()
                         for (snapshot in dataSnapshot.children) {
                             var picValue: PictureModel? = snapshot.getValue(PictureModel::class.java)
-                            picValue?.pictureKey = snapshot.key
-                            pictureModels.add(picValue)
+                            if (picValue?.isPrivate == null || picValue.isPrivate == false) {
+                                picValue?.pictureKey = snapshot.key
+                                pictureModels.add(picValue)
+                            }
                         }
                         for (i: Int in 0 until pictureModels.size) {
                             Firebase.database.getReference("users").child(pictureModels[i]?.uid!!)
