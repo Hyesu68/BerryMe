@@ -63,8 +63,8 @@ class MyFragment : Fragment() {
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "Public"
-                1 -> tab.text = "Private"
+                0 -> tab.text = resources.getString(R.string.my_public)
+                1 -> tab.text = resources.getString(R.string.my_private)
             }
         }.attach()
 

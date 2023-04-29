@@ -104,27 +104,6 @@ class DetailActivity : AppCompatActivity() {
                     binding.recyclerView.layoutManager = LinearLayoutManager(applicationContext)
                     binding.recyclerView.adapter = commentListAdapter
 
-                    /*FirebaseDatabase.getInstance().reference.child("pictures").child(picuid!!).child("comment")
-                        .addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                binding.detailactivityCommentListview.adapter = null
-                                val cmtArrayList = ArrayList<PictureModel.Comments>()
-                                for (snapshot in dataSnapshot.children) {
-                                    val cmtTmp = snapshot.getValue(PictureModel.Comments::class.java)
-                                    cmtTmp?.key = snapshot.key
-                                    cmtArrayList.add(cmtTmp!!)
-                                }
-                                val commentListAdapter = CommentListAdapter(applicationContext, cmtArrayList)
-                                binding.detailactivityCommentListview.setOnItemLongClickListener { adapterView, view, i, l ->
-                                    showCommentDialog(picuid, cmtArrayList[i].key, UserObject.userModel?.uid == cmtArrayList[i].uid)
-                                    return@setOnItemLongClickListener(true)
-                                }
-                                binding.detailactivityCommentListview.adapter = commentListAdapter
-                            }
-
-                            override fun onCancelled(error: DatabaseError) {
-                            }
-                        })*/
                     val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd HH:ss")
                     simpleDateFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
                     val unixTime = picValue?.timestamp as Long
@@ -222,12 +201,12 @@ class DetailActivity : AppCompatActivity() {
                     })
                     binding.listitemImageviewPicture.setOnClickListener(doubleClick)
 
-                    binding.detailactivityCommentButton.setOnClickListener {
-                        if (binding.detailactivityCommentEdittext.text != null) {
+                    binding.commentInput.setEndIconOnClickListener {
+                        if (binding.commentInput.editText?.text != null) {
                             val pictureComment = PictureModel.Comments()
                             pictureComment.uid = UserObject.userModel?.uid
                             pictureComment.username = UserObject.userModel?.username
-                            pictureComment.value = binding.detailactivityCommentEdittext.text.toString()
+                            pictureComment.value = binding.commentInput.editText?.text.toString()
                             pictureComment.timestamp = ServerValue.TIMESTAMP
 
                             val dt = Date()
@@ -239,7 +218,7 @@ class DetailActivity : AppCompatActivity() {
                                 .child(picValue?.pictureKey!!).child("comment").child(commentName)
                                 .setValue(pictureComment)
                                 .addOnSuccessListener {
-                                    binding.detailactivityCommentEdittext.text = null
+                                    binding.commentInput.editText?.text = null
                                     imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
                                     setDetail()
                                 }

@@ -47,12 +47,12 @@ class MessageActivity : AppCompatActivity() {
                 }
             })
 
-        binding.messageactivityButton.setOnClickListener {
+        binding.messageInput.setEndIconOnClickListener {
             val chat = mutableMapOf<String, Boolean>()
             chat[uid!!] = true
             chat[destinationUid!!] = true
             if (chatRoomUid == null) {
-                binding.messageactivityButton.isEnabled = false
+//                binding.messageactivityButton.isEnabled = false
                 FirebaseDatabase.getInstance().reference.child("chatrooms").push()
                     .child("users")
                     .setValue(chat).addOnSuccessListener {
@@ -68,11 +68,11 @@ class MessageActivity : AppCompatActivity() {
     fun sendMsg() {
         val comment: ChatModel.Comment = ChatModel.Comment()
         comment.uid = uid
-        comment.message = binding.messageactivityEdittext.text.toString()
+        comment.message = binding.messageInput.editText?.text.toString()
         comment.timestamp = ServerValue.TIMESTAMP
         FirebaseDatabase.getInstance().reference.child("chatrooms").child(chatRoomUid!!)
             .child("comments").push().setValue(comment).addOnCompleteListener {
-                binding.messageactivityEdittext?.setText("")
+                binding.messageInput.editText?.setText("")
             }
     }
 
@@ -85,13 +85,13 @@ class MessageActivity : AppCompatActivity() {
                         val chatModel: ChatModel? = item.getValue(ChatModel::class.java)
                         if (chatModel?.users?.containsKey(destinationUid) == true) {
                             chatRoomUid = item.key
-                            binding.messageactivityButton.isEnabled = true
+//                            binding.messageactivityButton.isEnabled = true
                             binding.messageactivityRecyclerview.layoutManager = LinearLayoutManager(this@MessageActivity)
                             binding.messageactivityRecyclerview.adapter = RecyclerViewAdapter(chatRoomUid,
                                 binding.messageactivityRecyclerview, uid, destinationUid
                             )
 
-                            if (binding.messageactivityEdittext.text?.isNotEmpty() == true) {
+                            if (binding.messageInput.editText?.text?.isNotEmpty() == true) {
                                 sendMsg()
                             }
                         }

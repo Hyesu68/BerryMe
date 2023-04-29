@@ -7,10 +7,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,13 +15,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.susuryo.berryme.databinding.ActivityMessageListBinding
 import com.susuryo.berryme.databinding.ItemChatBinding
-import com.susuryo.berryme.fragment.MessageFragment
 import com.susuryo.berryme.model.ChatModel
 import com.susuryo.berryme.model.UserModel
 import java.text.SimpleDateFormat
@@ -39,6 +34,10 @@ class MessageListActivity : AppCompatActivity() {
 
         binding.recyclerView.adapter = ChatRecyclerViewAdapter(this, applicationContext)
         binding.recyclerView.layoutManager = LinearLayoutManager(layoutInflater.context)
+
+        binding.toolBar.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     internal class ChatRecyclerViewAdapter(_activity : Activity, _context: Context) : RecyclerView.Adapter<ChatRecyclerViewAdapter.ViewHolder>() {
@@ -101,7 +100,7 @@ class MessageListActivity : AppCompatActivity() {
                         )?.message
                     )
 
-                    binding.chatitemImageview.setOnClickListener { view ->
+                    binding.constraintLayout.setOnClickListener { view ->
                         val intent = Intent(view.context, MessageActivity::class.java)
                         intent.putExtra("destinationUid", destinationUsers[position])
                         val activityOptions =

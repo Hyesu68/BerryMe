@@ -75,4 +75,8 @@
     <string name="member">회원 정보</string>
     <string name="how_to_be_very_me">" 매우 나다워지는 방법 "</string>
     <string name="private_post">비밀 게시물</string>
+    <string name="message">메시지</string>
+    <string name="my_public">공개 게시글</string>
+    <string name="my_private">private 게시글</string>
+    <string name="no_result">검색 결과가 없습니다.</string>
 </resources>
