@@ -78,7 +78,7 @@ class AllMemberFragment: Fragment() {
                         val result = mutableListOf<UserModel>()
                         for (item in snapshot.children) {
                             val tmp = item.getValue(UserModel::class.java)
-                            if (tmp != null && tmp.username?.contains(search) == true) {
+                            if (tmp != null && tmp.username?.lowercase()?.contains(search) == true) {
                                 result.add(tmp)
                             }
                         }

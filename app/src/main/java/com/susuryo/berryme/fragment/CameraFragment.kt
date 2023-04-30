@@ -57,8 +57,12 @@ class CameraFragment : Fragment() {
     }
 
     private fun share(caption: String) {
-        val uid = UserObject.userModel?.uid!!
+        binding.camerafragmentProgressbar.visibility = View.VISIBLE
+        binding.captionInput.isEnabled = false
+        binding.privateCheckBox.isEnabled = false
+        binding.shareButton.isEnabled = false
 
+        val uid = UserObject.userModel?.uid!!
         val dt = Date()
         val date = SimpleDateFormat("yyyyMMddHHmmss")
         val format = date.format(dt).toLong()
@@ -88,11 +92,13 @@ class CameraFragment : Fragment() {
                                 .child(uid).child("pictures").child(picName)
                                 .setValue(pictures)
                                 .addOnSuccessListener {
-                                    binding.camerafragmentProgressbar.visibility =
-                                        View.GONE
+                                    binding.camerafragmentProgressbar.visibility = View.GONE
+                                    binding.captionInput.isEnabled = true
+                                    binding.privateCheckBox.isEnabled = true
+                                    binding.shareButton.isEnabled = true
+
                                     val mainActivity = activity as MainActivity
-                                    mainActivity.binding.mainactivityBottomnavigationview.selectedItemId =
-                                        R.id.action_list
+                                    mainActivity.binding.mainactivityBottomnavigationview.selectedItemId = R.id.action_list
                                 }
                         }
 

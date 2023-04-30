@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -121,12 +123,15 @@ class DetailActivity : AppCompatActivity() {
                         for (i in picValue.Likes!!) {
                             if (i.key == UserObject.userModel?.uid) {
                                 isLiked = true
-                                binding.listitemImageviewHeart.setImageDrawable(
+                                /*binding.listitemImageviewHeart.setImageDrawable(
                                     applicationContext.resources.getDrawable(
-                                        R.drawable.icon_love_filled,
+                                        R.drawable.berry_full,
                                         applicationContext.theme
                                     )
-                                )
+                                )*/
+                                val drawable = resources.getDrawable(R.drawable.berry_full, theme)
+                                drawable.setColorFilter(ContextCompat.getColor(applicationContext, R.color.berrymeGradiant1), PorterDuff.Mode.SRC_IN)
+                                binding.listitemImageviewHeart.setImageDrawable(drawable)
                             }
                         }
                     }
@@ -142,12 +147,9 @@ class DetailActivity : AppCompatActivity() {
                                 }
                                 binding.listitemTextviewLikenum.text = likesNum.toString()
                                 isLiked = false
-                                binding.listitemImageviewHeart.setImageDrawable(
-                                    applicationContext.resources.getDrawable(
-                                        R.drawable.icon_love_blank,
-                                        applicationContext.theme
-                                    )
-                                )
+                                val drawable = resources.getDrawable(R.drawable.berry_empty, theme)
+                                drawable.setColorFilter(ContextCompat.getColor(applicationContext, R.color.berrymeGradiant1), PorterDuff.Mode.SRC_IN)
+                                binding.listitemImageviewHeart.setImageDrawable(drawable)
 
                                 FirebaseDatabase.getInstance().reference.child("pictures").child(picValue?.pictureKey!!).child("Likes").child(UserObject.userModel?.uid!!)
                                     .removeValue()
@@ -164,12 +166,9 @@ class DetailActivity : AppCompatActivity() {
                                 likesNum += 1
                                 binding.listitemTextviewLikenum.text = likesNum.toString()
                                 isLiked = true
-                                binding.listitemImageviewHeart.setImageDrawable(
-                                    applicationContext.resources.getDrawable(
-                                        R.drawable.icon_love_filled,
-                                        applicationContext.theme
-                                    )
-                                )
+                                val drawable = resources.getDrawable(R.drawable.berry_full, theme)
+                                drawable.setColorFilter(ContextCompat.getColor(applicationContext, R.color.berrymeGradiant1), PorterDuff.Mode.SRC_IN)
+                                binding.listitemImageviewHeart.setImageDrawable(drawable)
 
                                 binding.listitemAnimationLike.visibility = View.VISIBLE
                                 binding.listitemAnimationLike.playAnimation()

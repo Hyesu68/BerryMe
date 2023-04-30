@@ -125,7 +125,8 @@
                 android:id="@+id/listitem_imageview_heart"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/icon_love_blank"
+                android:background="@drawable/berry_empty"
+                android:backgroundTint="@color/berrymeGradiant1"
                 android:layout_toLeftOf="@+id/listitem_textview_likenum"/>
             <TextView
                 android:id="@+id/listitem_textview_likenum"
