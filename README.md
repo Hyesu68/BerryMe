@@ -16,7 +16,7 @@
 
 To run the BerryMe application, you need:
 
-- Android device or emulator running Android API XX or above.
+- Android device or emulator running Android API 21 or above.
 - Firebase project with the necessary configuration files (google-services.json).
 
 ## Installation
